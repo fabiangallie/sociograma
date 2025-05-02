@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Acceso docente</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #fffdf0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+    h2 {
+      font-size: 2em;
+      color: #2c3e50;
+    }
+    input, button {
+      font-size: 1em;
+      padding: 0.6em 1em;
+      margin: 1em;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #3498db;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+  </style>
+</head>
+<body>
+  <h2 id="titulo"></h2>
+  <input type="password" id="clave" placeholder="••••••••" />
+  <br>
+  <button onclick="validar()" id="btn"></button>
+  <p id="mensaje" style="color: red;"></p>
+
+  <script>
+    const lang = localStorage.getItem("lang") || "es";
+    const textos = {
+      gl: {
+        titulo: "Acceso para o profesorado",
+        boton: "Entrar",
+        error: "Contrasinal incorrecto"
+      },
+      es: {
+        titulo: "Acceso para el profesorado",
+        boton: "Entrar",
+        error: "Contraseña incorrecta"
+      }
+    };
+
+    document.getElementById("titulo").textContent = textos[lang].titulo;
+    document.getElementById("btn").textContent = textos[lang].boton;
+
+    function validar() {
+      const clave = document.getElementById("clave").value.trim();
+      if (clave === "atopa2024") {
+        window.location.href = "panel_profesor.html";
+      } else {
+        document.getElementById("mensaje").textContent = textos[lang].error;
+      }
+    }
+  </script>
+</body>
+</html>
