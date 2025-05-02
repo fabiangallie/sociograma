@@ -78,7 +78,10 @@
       ]
     }[lang];
 
-    const grupoKey = `grupo_${localStorage.getItem("alumno_curso")}_${localStorage.getItem("alumno_fecha")}`;
+    const curso = localStorage.getItem("alumno_curso");
+    const fecha = localStorage.getItem("alumno_fecha");
+    const alumno = localStorage.getItem("alumno_nombre");
+    const grupoKey = `grupo_${curso}_${fecha}`;
     const nombres = JSON.parse(localStorage.getItem(grupoKey)) || [];
 
     let paso = 0;
@@ -103,10 +106,9 @@
       seleccion.innerHTML = lang === "gl"
         ? "Arrastra aquí as túas eleccións (máx. 3)"
         : "Arrastra aquí tus elecciones (máx. 3)";
-      const aleatorios = mezclarArray([...nombres]);
 
-      aleatorios.forEach(nombre => {
-        if (nombre === localStorage.getItem("alumno_nombre")) return;
+      const opciones = mezclarArray([...nombres.filter(n => n !== alumno)]);
+      opciones.forEach(nombre => {
         const card = document.createElement("div");
         card.className = "card";
         card.setAttribute("draggable", true);
@@ -146,11 +148,7 @@
       seleccion.style.display = "none";
       document.querySelector("button").style.display = "none";
 
-      const nombre = localStorage.getItem("alumno_nombre") || "Descoñecido";
-      const curso = localStorage.getItem("alumno_curso") || "Sen curso";
-      const fecha = localStorage.getItem("alumno_fecha") || "Sen data";
-
-      let texto = `${lang === "gl" ? "Nome do alumno/a" : "Alumno/a"}: ${nombre}\nCurso: ${curso}\nData: ${fecha}\n\n${lang === "gl" ? "Respostas" : "Respuestas"}:\n`;
+      let texto = `${lang === "gl" ? "Nome do alumno/a" : "Alumno/a"}: ${alumno}\nCurso: ${curso}\nData: ${fecha}\n\n${lang === "gl" ? "Respostas" : "Respuestas"}:\n`;
       respuestas.forEach(r => {
         texto += `\n${r.pregunta}\n→ ${r.seleccionados.join(", ") || (lang === "gl" ? "Ninguén" : "Ninguno")}\n`;
       });
@@ -163,5 +161,6 @@
   </script>
 </body>
 </html>
+
 
 
