@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Panel docente</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f3fff6;
+      padding: 2em;
+      text-align: center;
+    }
+    h2 {
+      color: #2c3e50;
+    }
+    input, button, select {
+      padding: 0.5em;
+      margin: 0.5em;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      font-size: 1em;
+    }
+    button {
+      background-color: #27ae60;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #1e8e50;
+    }
+    .grupo {
+      margin-top: 1em;
+      padding: 1em;
+      background: #fff;
+      border-radius: 10px;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    ul {
+      list-style: none;
+      padding: 0;
+    }
+    li {
+      padding: 0.3em;
+    }
+  </style>
+</head>
+<body>
+  <h2>Crear grupo de alumnos</h2>
+  <input type="text" id="curso" placeholder="Curso (Ej: 4ºA)" />
+  <input type="date" id="fecha" />
+  <input type="text" id="nombreAlumno" placeholder="Nombre del alumno/a" />
+  <button onclick="agregarAlumno()">Añadir</button>
+  <button onclick="guardarGrupo()">Guardar grupo</button>
+
+  <div class="grupo">
+    <h3>Lista actual</h3>
+    <ul id="listaAlumnos"></ul>
+  </div>
+
+  <hr>
+  <h3>Grupos guardados</h3>
+  <select id="grupos" onchange="verGrupo()">
+    <option value="">Selecciona un grupo</option>
+  </select>
+  <ul id="verGrupoLista"></ul>
