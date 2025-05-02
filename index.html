@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sociograma Escola Diversa</title>
   <style>
     body {
@@ -18,36 +18,42 @@
       text-align: center;
     }
     h1 {
-      font-size: 2.5em;
+      font-size: 3.2em;
+      font-weight: bold;
       color: #2c3e50;
-      margin-bottom: 0.2em;
+      margin: 0.2em 0 0;
+    }
+    h2 {
+      font-size: 2em;
+      color: #16a085;
+      margin: 0 0 1em 0;
     }
     img {
-      max-width: 130px;
+      max-width: 150px;
       margin-bottom: 1em;
-      border-radius: 50%;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
     select, button {
       font-size: 1em;
-      padding: 0.5em 1em;
+      padding: 0.6em 1.2em;
       margin: 0.5em;
       border-radius: 8px;
       border: 1px solid #ccc;
     }
     button {
-      background-color: #2ecc71;
+      background-color: #3498db;
       color: white;
       cursor: pointer;
     }
     button:hover {
-      background-color: #27ae60;
+      background-color: #2980b9;
     }
   </style>
 </head>
 <body>
-  <img src="https://cdn-icons-png.flaticon.com/512/3208/3208707.png" alt="Logo Escola Diversa">
-  <h1>Sociograma Escola Diversa</h1>
+  <img src="https://cdn-icons-png.flaticon.com/512/10685/10685736.png" alt="Corazón diverso">
+  <h1>Sociograma</h1>
+  <h2>Escola Diversa</h2>
+
   <p>Escolle un idioma / Elige un idioma:</p>
   <select id="language">
     <option value="gl">Galego</option>
@@ -60,9 +66,10 @@
     function start() {
       const lang = document.getElementById('language').value;
       localStorage.setItem('lang', lang);
-      window.location.href = "formulario.html"; // siguiente paso
+      window.location.href = "seleccion.html";
     }
   </script>
 </body>
 </html>
+
 
