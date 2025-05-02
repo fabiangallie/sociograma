@@ -1,34 +1,11 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Panel docente</title>
+  <link rel="stylesheet" href="style.css" />
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: #f3fff6;
-      padding: 2em;
-      text-align: center;
-    }
-    h2 {
-      color: #2c3e50;
-    }
-    input, button, select {
-      padding: 0.5em;
-      margin: 0.5em;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      font-size: 1em;
-    }
-    button {
-      background-color: #27ae60;
-      color: white;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #1e8e50;
-    }
     .grupo {
       margin-top: 1em;
       padding: 1em;
@@ -37,6 +14,7 @@
       max-width: 500px;
       margin-left: auto;
       margin-right: auto;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
     }
     ul {
       list-style: none;
@@ -48,21 +26,94 @@
   </style>
 </head>
 <body>
-  <h2>Crear grupo de alumnos</h2>
-  <input type="text" id="curso" placeholder="Curso (Ej: 4ºA)" />
-  <input type="date" id="fecha" />
-  <input type="text" id="nombreAlumno" placeholder="Nombre del alumno/a" />
-  <button onclick="agregarAlumno()">Añadir</button>
-  <button onclick="guardarGrupo()">Guardar grupo</button>
+  <div class="container">
+    <h2>Crear grupo de alumnos</h2>
+    <input type="text" id="curso" placeholder="Curso (Ej: 4ºA)" />
+    <input type="date" id="fecha" />
+    <input type="text" id="nombreAlumno" placeholder="Nombre del alumno/a" />
+    <br>
+    <button onclick="agregarAlumno()">Añadir</button>
+    <button onclick="guardarGrupo()">Guardar grupo</button>
 
-  <div class="grupo">
-    <h3>Lista actual</h3>
-    <ul id="listaAlumnos"></ul>
+    <div class="grupo">
+      <h3>Lista actual</h3>
+      <ul id="listaAlumnos"></ul>
+    </div>
+
+    <hr>
+    <h3>Grupos guardados</h3>
+    <select id="grupos" onchange="verGrupo()">
+      <option value="">Selecciona un grupo</option>
+    </select>
+    <ul id="verGrupoLista"></ul>
   </div>
 
-  <hr>
-  <h3>Grupos guardados</h3>
-  <select id="grupos" onchange="verGrupo()">
-    <option value="">Selecciona un grupo</option>
-  </select>
-  <ul id="verGrupoLista"></ul>
+  <script>
+    let alumnos = [];
+
+    function agregarAlumno() {
+      const nombre = document.getElementById("nombreAlumno").value.trim();
+      if (nombre) {
+        alumnos.push(nombre);
+        document.getElementById("nombreAlumno").value = "";
+        actualizarLista();
+      }
+    }
+
+    function actualizarLista() {
+      const ul = document.getElementById("listaAlumnos");
+      ul.innerHTML = "";
+      alumnos.forEach(nombre => {
+        const li = document.createElement("li");
+        li.textContent = nombre;
+        ul.appendChild(li);
+      });
+    }
+
+    function guardarGrupo() {
+      const curso = document.getElementById("curso").value.trim();
+      const fecha = document.getElementById("fecha").value;
+      if (!curso || !fecha || alumnos.length === 0) {
+        alert("Faltan datos o no hay alumnos.");
+        return;
+      }
+      const clave = `grupo_${curso}_${fecha}`;
+      localStorage.setItem(clave, JSON.stringify(alumnos));
+      alert("Grupo guardado con éxito.");
+      cargarGrupos();
+      alumnos = [];
+      actualizarLista();
+    }
+
+    function cargarGrupos() {
+      const selector = document.getElementById("grupos");
+      selector.innerHTML = '<option value="">Selecciona un grupo</option>';
+      for (let i = 0; i < localStorage.length; i++) {
+        const clave = localStorage.key(i);
+        if (clave.startsWith("grupo_")) {
+          const opcion = document.createElement("option");
+          opcion.value = clave;
+          opcion.textContent = clave.replace("grupo_", "").replace("_", " - ");
+          selector.appendChild(opcion);
+        }
+      }
+    }
+
+    function verGrupo() {
+      const clave = document.getElementById("grupos").value;
+      const lista = document.getElementById("verGrupoLista");
+      lista.innerHTML = "";
+      if (clave) {
+        const alumnos = JSON.parse(localStorage.getItem(clave));
+        alumnos.forEach(nombre => {
+          const li = document.createElement("li");
+          li.textContent = nombre;
+          lista.appendChild(li);
+        });
+      }
+    }
+
+    cargarGrupos();
+  </script>
+</body>
+</html>
