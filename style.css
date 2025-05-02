@@ -1,61 +1,70 @@
 body {
-  font-family: 'Segoe UI', sans-serif;
-  background: linear-gradient(to right, #dfe9f3, #ffffff);
+  font-family: 'Fredoka', sans-serif;
   margin: 0;
   padding: 0;
-  min-height: 100vh;
+  background: linear-gradient(135deg, #eef6ff, #f9fcff);
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex-direction: column;
-}
-
-h1, h2, h3 {
+  min-height: 100vh;
+  text-align: center;
   color: #2c3e50;
-  margin-bottom: 1em;
-  font-weight: 600;
-  font-size: 2.2em;
 }
 
 .container {
-  background: #ffffff;
-  padding: 2em;
+  background: white;
+  padding: 2.5em;
   border-radius: 16px;
-  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
-  max-width: 600px;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
+  max-width: 500px;
   width: 90%;
-  text-align: center;
+  margin: 1em;
 }
 
-input, select, button {
-  font-size: 1.1em;
-  padding: 0.7em 1.2em;
-  margin: 0.7em;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  transition: all 0.2s ease;
+h1 {
+  font-size: 3em;
+  font-weight: 600;
+  margin: 0.2em 0;
+  text-shadow: 1px 1px 2px #ccc;
 }
 
-input:focus, select:focus {
-  outline: none;
-  border-color: #3498db;
-  box-shadow: 0 0 8px rgba(52, 152, 219, 0.4);
+h2 {
+  font-size: 2em;
+  font-weight: 400;
+  margin: 0.2em 0 1em;
+  color: #3498db;
+  text-shadow: 1px 1px 1px #ddeefc;
 }
 
 button {
   background-color: #3498db;
   color: white;
-  font-weight: bold;
+  font-size: 1.1em;
+  padding: 0.7em 1.4em;
   border: none;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
   cursor: pointer;
+  box-shadow: 2px 4px 6px rgba(0,0,0,0.1);
+  transition: all 0.2s ease-in-out;
 }
 
 button:hover {
   background-color: #2980b9;
-  transform: translateY(-1px);
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 2px 6px 12px rgba(0,0,0,0.15);
 }
+
+select, input {
+  font-size: 1em;
+  padding: 0.6em 1.2em;
+  margin: 0.5em 0;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  width: 90%;
+  max-width: 300px;
+}
+
 
 
 
