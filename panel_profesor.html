@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Panel docente</title>
+  <title>Panel docente editable</title>
   <link rel="stylesheet" href="style.css" />
   <style>
     .grupo {
@@ -20,20 +20,24 @@
     li {
       padding: 0.3em;
     }
-    select {
-      width: 90%;
-      max-width: 400px;
+    .del-btn {
+      background: none;
+      border: none;
+      color: red;
+      margin-left: 10px;
+      cursor: pointer;
+      font-weight: bold;
     }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>Crear grupo de alumnos</h2>
+    <h2>Editar / Crear grupo de alumnos</h2>
     <input type="text" id="curso" placeholder="Curso (Ej: 4ºA)" />
     <input type="date" id="fecha" />
     <input type="text" id="nombreAlumno" placeholder="Nombre del alumno/a" />
     <br>
-    <button onclick="agregarAlumno()">Añadir</button>
+    <button onclick="agregarAlumno()">Añadir alumno</button>
     <button onclick="guardarGrupo()">Guardar grupo</button>
 
     <div class="grupo">
@@ -43,10 +47,10 @@
 
     <hr>
     <h3>Grupos guardados</h3>
-    <select id="grupos" onchange="verGrupo()">
+    <select id="grupos" onchange="cargarGrupoSeleccionado()">
       <option value="">Selecciona un grupo</option>
     </select>
-    <ul id="verGrupoLista"></ul>
+    <button onclick="eliminarGrupo()">Eliminar grupo seleccionado</button>
   </div>
 
   <script>
@@ -64,11 +68,16 @@
     function actualizarLista() {
       const ul = document.getElementById("listaAlumnos");
       ul.innerHTML = "";
-      alumnos.forEach(nombre => {
+      alumnos.forEach((nombre, index) => {
         const li = document.createElement("li");
-        li.textContent = nombre;
+        li.innerHTML = nombre + ' <button class="del-btn" onclick="eliminarAlumno(' + index + ')">✕</button>';
         ul.appendChild(li);
       });
+    }
+
+    function eliminarAlumno(index) {
+      alumnos.splice(index, 1);
+      actualizarLista();
     }
 
     function guardarGrupo() {
@@ -82,7 +91,6 @@
       localStorage.setItem(clave, JSON.stringify(alumnos));
       alert("Grupo guardado con éxito.");
       cargarGrupos();
-      alumnos = [];
       actualizarLista();
     }
 
@@ -100,17 +108,27 @@
       }
     }
 
-    function verGrupo() {
+    function cargarGrupoSeleccionado() {
       const clave = document.getElementById("grupos").value;
-      const lista = document.getElementById("verGrupoLista");
-      lista.innerHTML = "";
       if (clave) {
-        const alumnos = JSON.parse(localStorage.getItem(clave));
-        alumnos.forEach(nombre => {
-          const li = document.createElement("li");
-          li.textContent = nombre;
-          lista.appendChild(li);
-        });
+        const datos = clave.replace("grupo_", "").split("_");
+        document.getElementById("curso").value = datos[0];
+        document.getElementById("fecha").value = datos[1];
+        alumnos = JSON.parse(localStorage.getItem(clave)) || [];
+        actualizarLista();
+      }
+    }
+
+    function eliminarGrupo() {
+      const clave = document.getElementById("grupos").value;
+      if (clave && confirm("¿Estás seguro de que deseas eliminar este grupo?")) {
+        localStorage.removeItem(clave);
+        cargarGrupos();
+        alumnos = [];
+        actualizarLista();
+        document.getElementById("curso").value = "";
+        document.getElementById("fecha").value = "";
+        alert("Grupo eliminado.");
       }
     }
 
@@ -118,6 +136,7 @@
   </script>
 </body>
 </html>
+
 
 
 
