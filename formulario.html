@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Datos previos - Sociograma</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f4fcff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      text-align: center;
+    }
+    h2 {
+      color: #2c3e50;
+      margin-bottom: 1em;
+    }
+    input, select, button {
+      font-size: 1em;
+      padding: 0.5em;
+      margin: 0.5em;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      width: 80%;
+      max-width: 300px;
+    }
+    button {
+      background-color: #3498db;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+  </style>
+</head>
+<body>
+  <h2>Introduce tus datos</h2>
+
+  <input type="text" id="nombre" placeholder="Nombre completo" required>
+  <input type="text" id="curso" placeholder="Curso (Ej: 5ºA)" required>
+  <input type="date" id="fecha">
+
+  <br>
+  <button onclick="continuar()">Comenzar test</button>
+
+  <script>
+    // Rellenar fecha actual automáticamente
+    const hoy = new Date().toISOString().split('T')[0];
+    document.getElementById('fecha').value = hoy;
+
+    function continuar() {
+      const nombre = document.getElementById('nombre').value.trim();
+      const curso = document.getElementById('curso').value.trim();
+      const fecha = document.getElementById('fecha').value;
+
+      if (!nombre || !curso || !fecha) {
+        alert("Por favor, rellena todos los campos.");
+        return;
+      }
+
+      // Guardar datos en localStorage
+      localStorage.setItem("alumno_nombre", nombre);
+      localStorage.setItem("alumno_curso", curso);
+      localStorage.setItem("alumno_fecha", fecha);
+
+      // Redirigir al test sociométrico
+      window.location.href = "sociograma.html";
+    }
+  </script>
+</body>
+</html>
