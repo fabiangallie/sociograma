@@ -16,23 +16,15 @@
   <script>
     const lang = localStorage.getItem('lang') || 'es';
     const textos = {
-      gl: {
-        titulo: "Quen es ti?",
-        prof: "Entrar como docente",
-        alumno: "Entrar como alumno/a"
-      },
-      es: {
-        titulo: "¿Quién eres?",
-        prof: "Entrar como docente",
-        alumno: "Entrar como alumno/a"
-      }
+      gl: { titulo: "Quen es ti?", prof: "Entrar como docente", alumno: "Entrar como alumno/a" },
+      es: { titulo: "¿Quién eres?", prof: "Entrar como docente", alumno: "Entrar como alumno/a" }
     };
-
     document.getElementById("titulo").textContent = textos[lang].titulo;
     document.getElementById("profBtn").textContent = textos[lang].prof;
     document.getElementById("alumnoBtn").textContent = textos[lang].alumno;
   </script>
 </body>
 </html>
+
 
 
