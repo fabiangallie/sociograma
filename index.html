@@ -23,4 +23,45 @@
       margin-bottom: 0.2em;
     }
     img {
+      max-width: 130px;
+      margin-bottom: 1em;
+      border-radius: 50%;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    select, button {
+      font-size: 1em;
+      padding: 0.5em 1em;
+      margin: 0.5em;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+    }
+    button {
+      background-color: #2ecc71;
+      color: white;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #27ae60;
+    }
+  </style>
+</head>
+<body>
+  <img src="https://cdn-icons-png.flaticon.com/512/3208/3208707.png" alt="Logo Escola Diversa">
+  <h1>Sociograma Escola Diversa</h1>
+  <p>Escolle un idioma / Elige un idioma:</p>
+  <select id="language">
+    <option value="gl">Galego</option>
+    <option value="es">Castellano</option>
+  </select>
+  <br>
+  <button onclick="start()">Entrar</button>
 
+  <script>
+    function start() {
+      const lang = document.getElementById('language').value;
+      localStorage.setItem('lang', lang);
+      window.location.href = "formulario.html"; // siguiente paso
+    }
+  </script>
+</body>
+</html>
