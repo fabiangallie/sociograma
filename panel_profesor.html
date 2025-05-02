@@ -6,19 +6,35 @@
   <title>Panel docente</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    .grupo {
-      margin-top: 1em;
-      padding: 1em;
-      background: #fff;
+    .tabs {
+      display: flex;
+      gap: 1em;
+      margin-bottom: 1em;
+    }
+    .tabs button {
+      padding: 0.6em 1.2em;
       border-radius: 10px;
+      background-color: #5dade2;
+      color: white;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .tabs button:hover {
+      background-color: #3498db;
+    }
+    .section {
+      display: none;
+    }
+    .section.active {
+      display: block;
+    }
+    .grupo, ul {
+      background: #fff;
+      padding: 1em;
+      border-radius: 12px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.05);
-    }
-    ul {
-      list-style: none;
-      padding: 0;
-    }
-    li {
-      padding: 0.3em;
+      margin-top: 1em;
     }
     .del-btn {
       background: none;
@@ -28,38 +44,61 @@
       cursor: pointer;
       font-weight: bold;
     }
+    .informe-box {
+      background: #f9f9f9;
+      margin: 0.5em 0;
+      padding: 0.5em 1em;
+      border-radius: 8px;
+      white-space: pre-wrap;
+      font-family: monospace;
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h2>Editar / Crear grupo de alumnos</h2>
-    <input type="text" id="curso" placeholder="Curso (Ej: 4ºA)" />
-    <input type="date" id="fecha" />
-    <input type="text" id="nombreAlumno" placeholder="Nombre del alumno/a" />
-    <br>
-    <button onclick="agregarAlumno()">Añadir alumno</button>
-    <button onclick="guardarGrupo()">Guardar grupo</button>
+    <h2>Panel docente</h2>
 
-    <div class="grupo">
-      <h3>Lista actual</h3>
-      <ul id="listaAlumnos"></ul>
+    <div class="tabs">
+      <button onclick="mostrarSeccion('grupos')">Grupos</button>
+      <button onclick="mostrarSeccion('informes')">Informes</button>
     </div>
 
-    <hr>
-    <h3>Grupos guardados</h3>
-    <select id="grupos" onchange="cargarGrupoSeleccionado()">
-      <option value="">Selecciona un grupo</option>
-    </select>
-    <button onclick="eliminarGrupo()">Eliminar grupo seleccionado</button>
+    <!-- SECCION GRUPOS -->
+    <div id="grupos" class="section active">
+      <input type="text" id="curso" placeholder="Curso (Ej: 4ºA)" />
+      <input type="date" id="fecha" />
+      <input type="text" id="nombreAlumno" placeholder="Nombre del alumno/a" />
+      <br>
+      <button onclick="agregarAlumno()">Añadir alumno</button>
+      <button onclick="guardarGrupo()">Guardar grupo</button>
 
-    <hr>
-    <button onclick="window.location.href='acceso_alumno.html'">
-      Probar como alumno/a
-    </button>
+      <div class="grupo">
+        <h3>Lista actual</h3>
+        <ul id="listaAlumnos"></ul>
+      </div>
+
+      <hr>
+      <h3>Grupos guardados</h3>
+      <select id="gruposGuardados" onchange="cargarGrupoSeleccionado()">
+        <option value="">Selecciona un grupo</option>
+      </select>
+      <button onclick="eliminarGrupo()">Eliminar grupo seleccionado</button>
+    </div>
+
+    <!-- SECCION INFORMES -->
+    <div id="informes" class="section">
+      <h3>Respuestas individuales recogidas</h3>
+      <div id="listaInformes"></div>
+    </div>
   </div>
 
   <script>
     let alumnos = [];
+
+    function mostrarSeccion(id) {
+      document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
+    }
 
     function agregarAlumno() {
       const nombre = document.getElementById("nombreAlumno").value.trim();
@@ -100,7 +139,7 @@
     }
 
     function cargarGrupos() {
-      const selector = document.getElementById("grupos");
+      const selector = document.getElementById("gruposGuardados");
       selector.innerHTML = '<option value="">Selecciona un grupo</option>';
       for (let i = 0; i < localStorage.length; i++) {
         const clave = localStorage.key(i);
@@ -114,7 +153,7 @@
     }
 
     function cargarGrupoSeleccionado() {
-      const clave = document.getElementById("grupos").value;
+      const clave = document.getElementById("gruposGuardados").value;
       if (clave) {
         const datos = clave.replace("grupo_", "").split("_");
         document.getElementById("curso").value = datos[0];
@@ -125,22 +164,43 @@
     }
 
     function eliminarGrupo() {
-      const clave = document.getElementById("grupos").value;
-      if (clave && confirm("¿Estás seguro de que deseas eliminar este grupo?")) {
+      const clave = document.getElementById("gruposGuardados").value;
+      if (clave && confirm("¿Deseas eliminar este grupo?")) {
         localStorage.removeItem(clave);
         cargarGrupos();
         alumnos = [];
         actualizarLista();
         document.getElementById("curso").value = "";
         document.getElementById("fecha").value = "";
-        alert("Grupo eliminado.");
       }
     }
 
+    function cargarInformes() {
+      const contenedor = document.getElementById("listaInformes");
+      contenedor.innerHTML = "";
+      Object.keys(localStorage).forEach(clave => {
+        if (clave.startsWith("respuesta_")) {
+          const datos = JSON.parse(localStorage.getItem(clave));
+          const div = document.createElement("div");
+          div.className = "informe-box";
+          div.textContent = `Alumno/a: ${datos.alumno}
+Curso: ${datos.curso}
+Fecha: ${datos.fecha}
+
+${datos.respuestas.map(r => `${r.pregunta}\n→ ${r.seleccionados.join(", ") || "Ninguno"}`).join("\n\n")}
+          `;
+          contenedor.appendChild(div);
+        }
+      });
+    }
+
+    // Inicializar
     cargarGrupos();
+    cargarInformes();
   </script>
 </body>
 </html>
+
 
 
 
