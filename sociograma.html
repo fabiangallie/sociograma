@@ -87,7 +87,7 @@
       border: 1px solid #ccc;
       box-shadow: 0 4px 12px rgba(0,0,0,0.06);
       font-size: 1.05em;
-      text-align: left;
+      text-align: center;
     }
   </style>
 </head>
@@ -182,20 +182,29 @@
     }
 
     function mostrarInforme() {
-      document.querySelector("h2").textContent = lang === "gl" ? "Informe final" : "Informe final";
+      document.querySelector("h2").style.display = "none";
       lista.style.display = "none";
       seleccion.style.display = "none";
       document.querySelector("button").style.display = "none";
 
-      let texto = `${lang === "gl" ? "Nome do alumno/a" : "Alumno/a"}: ${alumno}\nCurso: ${curso}\nData: ${fecha}\n\n${lang === "gl" ? "Respostas" : "Respuestas"}:\n`;
-      respuestas.forEach(r => {
-        texto += `\n${r.pregunta}\n→ ${r.seleccionados.join(", ") || (lang === "gl" ? "Ninguén" : "Ninguno")}\n`;
-      });
+      const resumen = {
+        alumno: alumno,
+        curso: curso,
+        fecha: fecha,
+        respuestas: respuestas
+      };
 
-      informe.innerHTML = `<pre>${texto}</pre>
+      const clave = `respuesta_${alumno}_${curso}_${fecha}`;
+      localStorage.setItem(clave, JSON.stringify(resumen));
+
+      informe.innerHTML = `
+        <h2>${lang === "gl" ? "Grazas pola túa participación!" : "¡Gracias por tu participación!"}</h2>
+        <div style="font-size: 4em; margin-bottom: 0.5em;">🎉</div>
+        <p>${lang === "gl" ? "As túas respostas foron gardadas." : "Tus respuestas han sido guardadas."}</p>
         <button onclick="window.location.href='index.html'" style="margin-top: 1.5em;">
           ${lang === "gl" ? "Volver ao inicio" : "Volver al inicio"}
-        </button>`;
+        </button>
+      `;
       informe.style.display = "block";
     }
 
@@ -203,6 +212,7 @@
   </script>
 </body>
 </html>
+
 
 
 
