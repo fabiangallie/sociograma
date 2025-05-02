@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -26,9 +25,49 @@
 
     function cargarGrupos() {
       const selector = document.getElementById("grupo");
-      for (let i = 0; i < localStorage.length; i++) {
-        const clave = localStorage.key(i);
-        if (clave.startsWith("grupo_")) {
-          const opcion = document.createElement("option");
-          opcion
+      selector.innerHTML = '<option value="">Selecciona curso e data</option>';
+      const claves = Object.keys(localStorage).filter(k => k.startsWith("grupo_"));
+      claves.forEach(clave => {
+        const opcion = document.createElement("option");
+        opcion.value = clave;
+        opcion.textContent = clave.replace("grupo_", "").replace("_", " - ");
+        selector.appendChild(opcion);
+      });
+    }
+
+    function cargarNombres() {
+      const grupo = document.getElementById("grupo").value;
+      const selector = document.getElementById("nombre");
+      selector.innerHTML = '<option value="">Selecciona o teu nome</option>';
+      if (grupo && localStorage.getItem(grupo)) {
+        const alumnos = JSON.parse(localStorage.getItem(grupo));
+        alumnos.forEach(nombre => {
+          const opt = document.createElement("option");
+          opt.value = nombre;
+          opt.textContent = nombre;
+          selector.appendChild(opt);
+        });
+      }
+    }
+
+    function continuar() {
+      const grupo = document.getElementById("grupo").value;
+      const nombre = document.getElementById("nombre").value;
+      if (!grupo || !nombre) {
+        alert(lang === "gl" ? "Escolle grupo e nome." : "Selecciona grupo y nombre.");
+        return;
+      }
+
+      const [curso, fecha] = grupo.replace("grupo_", "").split("_");
+      localStorage.setItem("alumno_nombre", nombre);
+      localStorage.setItem("alumno_curso", curso);
+      localStorage.setItem("alumno_fecha", fecha);
+      window.location.href = "sociograma.html";
+    }
+
+    cargarGrupos();
+  </script>
+</body>
+</html>
+
 
