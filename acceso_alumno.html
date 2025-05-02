@@ -9,14 +9,17 @@
 <body>
   <div class="container">
     <h2 id="titulo">Acceso para alumnado</h2>
+
     <select id="grupo" onchange="cargarNombres()">
       <option value="">Selecciona curso e data</option>
     </select>
     <br>
+
     <select id="nombre">
       <option value="">Selecciona o teu nome</option>
     </select>
     <br>
+
     <button onclick="continuar()">Continuar</button>
   </div>
 
@@ -26,12 +29,13 @@
     function cargarGrupos() {
       const selector = document.getElementById("grupo");
       selector.innerHTML = '<option value="">Selecciona curso e data</option>';
-      const claves = Object.keys(localStorage).filter(k => k.startsWith("grupo_"));
-      claves.forEach(clave => {
-        const opcion = document.createElement("option");
-        opcion.value = clave;
-        opcion.textContent = clave.replace("grupo_", "").replace("_", " - ");
-        selector.appendChild(opcion);
+      Object.keys(localStorage).forEach(key => {
+        if (key.startsWith("grupo_")) {
+          const opcion = document.createElement("option");
+          opcion.value = key;
+          opcion.textContent = key.replace("grupo_", "").replace("_", " - ");
+          selector.appendChild(opcion);
+        }
       });
     }
 
@@ -69,5 +73,6 @@
   </script>
 </body>
 </html>
+
 
 
