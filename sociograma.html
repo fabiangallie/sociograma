@@ -87,6 +87,7 @@
       border: 1px solid #ccc;
       box-shadow: 0 4px 12px rgba(0,0,0,0.06);
       font-size: 1.05em;
+      text-align: left;
     }
   </style>
 </head>
@@ -191,7 +192,10 @@
         texto += `\n${r.pregunta}\n→ ${r.seleccionados.join(", ") || (lang === "gl" ? "Ninguén" : "Ninguno")}\n`;
       });
 
-      informe.innerText = texto;
+      informe.innerHTML = `<pre>${texto}</pre>
+        <button onclick="window.location.href='index.html'" style="margin-top: 1.5em;">
+          ${lang === "gl" ? "Volver ao inicio" : "Volver al inicio"}
+        </button>`;
       informe.style.display = "block";
     }
 
@@ -199,6 +203,7 @@
   </script>
 </body>
 </html>
+
 
 
 
