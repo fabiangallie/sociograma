@@ -1,0 +1,73 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Acceso alumno/a</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h2 id="titulo">Acceso para alumnado</h2>
+    <select id="grupo" onchange="cargarNombres()">
+      <option value="">Selecciona curso e data</option>
+    </select>
+    <br>
+    <select id="nombre">
+      <option value="">Selecciona o teu nome</option>
+    </select>
+    <br>
+    <button onclick="continuar()">Continuar</button>
+  </div>
+
+  <script>
+    const lang = localStorage.getItem("lang") || "es";
+
+    function cargarGrupos() {
+      const selector = document.getElementById("grupo");
+      for (let i = 0; i < localStorage.length; i++) {
+        const clave = localStorage.key(i);
+        if (clave.startsWith("grupo_")) {
+          const opcion = document.createElement("option");
+          opcion.value = clave;
+          opcion.textContent = clave.replace("grupo_", "").replace("_", " - ");
+          selector.appendChild(opcion);
+        }
+      }
+    }
+
+    function cargarNombres() {
+      const grupo = document.getElementById("grupo").value;
+      const selector = document.getElementById("nombre");
+      selector.innerHTML = '<option value="">Selecciona o teu nome</option>';
+      if (grupo) {
+        const alumnos = JSON.parse(localStorage.getItem(grupo));
+        alumnos.forEach(nombre => {
+          const opt = document.createElement("option");
+          opt.value = nombre;
+          opt.textContent = nombre;
+          selector.appendChild(opt);
+        });
+      }
+    }
+
+    function continuar() {
+      const grupo = document.getElementById("grupo").value;
+      const nombre = document.getElementById("nombre").value;
+      if (!grupo || !nombre) {
+        alert(lang === "gl" ? "Escolle grupo e nome." : "Selecciona grupo y nombre.");
+        return;
+      }
+
+      const [curso, fecha] = grupo.replace("grupo_", "").split("_");
+      localStorage.setItem("alumno_nombre", nombre);
+      localStorage.setItem("alumno_curso", curso);
+      localStorage.setItem("alumno_fecha", fecha);
+      window.location.href = "sociograma.html";
+    }
+
+    cargarGrupos();
+  </script>
+</body>
+</html>
