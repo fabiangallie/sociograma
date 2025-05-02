@@ -4,47 +4,18 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Seleccionar perfil</title>
-  <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(135deg, #eaf6ff, #e2fff0);
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      height: 100vh;
-      text-align: center;
-    }
-    h2 {
-      font-size: 2.2em;
-      color: #2c3e50;
-      margin-bottom: 1em;
-    }
-    button {
-      font-size: 1.1em;
-      padding: 0.6em 1.2em;
-      margin: 0.5em;
-      border-radius: 8px;
-      border: 1px solid #ccc;
-      background-color: #3498db;
-      color: white;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #2980b9;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h2 id="titulo"></h2>
-  <button onclick="window.location.href='acceso_profesor.html'" id="profBtn"></button>
-  <button onclick="window.location.href='acceso_alumno.html'" id="alumnoBtn"></button>
+  <div class="container">
+    <h2 id="titulo">¿Quién eres?</h2>
+    <button onclick="window.location.href='acceso_profesor.html'" id="profBtn">Entrar como docente</button>
+    <br><br>
+    <button onclick="window.location.href='acceso_alumno.html'" id="alumnoBtn">Entrar como alumno/a</button>
+  </div>
 
   <script>
     const lang = localStorage.getItem('lang') || 'es';
-
     const textos = {
       gl: {
         titulo: "Quen es ti?",
@@ -57,11 +28,11 @@
         alumno: "Entrar como alumno/a"
       }
     };
-
     document.getElementById("titulo").textContent = textos[lang].titulo;
     document.getElementById("profBtn").textContent = textos[lang].prof;
     document.getElementById("alumnoBtn").textContent = textos[lang].alumno;
   </script>
 </body>
 </html>
+
 
