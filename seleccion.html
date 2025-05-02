@@ -10,7 +10,6 @@
   <div class="container">
     <h2 id="titulo">¿Quién eres?</h2>
     <button onclick="window.location.href='acceso_profesor.html'" id="profBtn">Entrar como docente</button>
-    <br><br>
     <button onclick="window.location.href='acceso_alumno.html'" id="alumnoBtn">Entrar como alumno/a</button>
   </div>
 
@@ -28,6 +27,7 @@
         alumno: "Entrar como alumno/a"
       }
     };
+
     document.getElementById("titulo").textContent = textos[lang].titulo;
     document.getElementById("profBtn").textContent = textos[lang].prof;
     document.getElementById("alumnoBtn").textContent = textos[lang].alumno;
