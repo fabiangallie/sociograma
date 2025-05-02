@@ -10,10 +10,12 @@ body {
   min-height: 100vh;
   text-align: center;
 }
+
 h1, h2 {
   color: #2c3e50;
   margin-bottom: 1em;
 }
+
 input, select, button {
   font-size: 1em;
   padding: 0.6em 1.2em;
@@ -21,14 +23,17 @@ input, select, button {
   border-radius: 8px;
   border: 1px solid #ccc;
 }
+
 button {
   background-color: #3498db;
   color: white;
   cursor: pointer;
 }
+
 button:hover {
   background-color: #2980b9;
 }
+
 .container {
   background: white;
   padding: 2em;
@@ -37,4 +42,5 @@ button:hover {
   max-width: 500px;
   width: 90%;
 }
+
 
