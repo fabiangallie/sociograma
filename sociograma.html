@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sociograma - Cuestionario</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f7faff;
+      margin: 0;
+      padding: 1em;
+      text-align: center;
+    }
+    h2 {
+      color: #2c3e50;
+    }
+    .names-list, .selection-box {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 0.5em;
+      padding: 1em;
+      margin: 1em auto;
+      background: white;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      min-height: 80px;
+      max-width: 600px;
+    }
+    .selection-box {
+      background: #e8ffe8;
+    }
+    .name {
+      padding: 0.5em 1em;
+      background: #e0e0e0;
+      border-radius: 5px;
+      cursor: grab;
+    }
+    button {
+      padding: 0.6em 1.2em;
+      margin: 1em;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 1em;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+    #informe {
+      margin-top: 2em;
+      padding: 1em;
+      background: #fff;
+      border-radius: 10px;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      white-space: pre-wrap;
+      border: 1px solid #ccc;
+    }
+  </style>
+</head>
+<body>
+  <h2 id="pregunta"></h2>
+  <div class="names-list" id="lista-nombres"></div>
+  <div class="selection-box" id="seleccion">Arrastra aquí tus elecciones (máx. 3)</div>
+  <button onclick="siguiente()">Siguiente</button>
+  <div id="informe" style="display:none;"></div>
+
+  <script>
+    const preguntas = [
+      "¿Con quién te gusta jugar en el recreo?",
+      "¿Con quién no te gusta jugar en el recreo?",
+      "¿Con quién te gusta trabajar en clase?",
+      "¿Con quién no te gusta trabajar en clase?"
+    ];
+
+    const nombres = ["Ana", "Bruno", "Carlos", "Daniela", "Elena", "Felipe", "Gabriela"];
+    let paso = 0;
+    const respuestas = [];
+
+    const preguntaEl = document.getElementById("pregunta");
+    const lista = document.getElementById("lista-nombres");
+    const seleccion = document.getElementById("seleccion");
+    const informe = document.getElementById("informe");
+
+    function cargarPregunta() {
+      preguntaEl.textContent = preguntas[paso];
+      lista.innerHTML = "";
+      seleccion.innerHTML = "Arrastra aquí tus elecciones (máx. 3)";
+      nombres.forEach(nombre => {
+        const div = document.createElement("div");
+        div.className = "name";
+        div.innerText = nombre;
+        div.draggable = true;
+        div.ondragstart = e => e.dataTransfer.setData("text", nombre);
+        lista.appendChild(div);
+      });
+    }
+
+    seleccion.ondragover = e => e.preventDefault();
+    seleccion.ondrop = e => {
+      e.preventDefault();
+      const nombre = e.dataTransfer.getData("text");
+      const yaEsta = [...seleccion.children].some(c => c.innerText === nombre);
+      if (!yaEsta && seleccion.querySelectorAll(".name").length < 3) {
+        const div = document.createElement("div");
+        div.className = "name";
+        div.innerText = nombre;
+        seleccion.appendChild(div);
+      }
+    };
+
+    function siguiente() {
+      const elegidos = [...seleccion.querySelectorAll(".name")].map(e => e.innerText);
+      respuestas.push({ pregunta: preguntas[paso], seleccionados: elegidos });
+      paso++;
+      if (paso < preguntas.length) {
+        cargarPregunta();
+      } else {
+        mostrarInforme();
+      }
+    }
+
+    function mostrarInforme() {
+      document.querySelector("h2").textContent = "Informe final";
+      lista.style.display = "none";
+      seleccion.style.display = "none";
+      document.querySelector("button").style.display = "none";
+
+      const nombre = localStorage.getItem("alumno_nombre") || "Desconocido";
+      const curso = localStorage.getItem("alumno_curso") || "Sin curso";
+      const fecha = localStorage.getItem("alumno_fecha") || "Fecha no indicada";
+
+      let texto = `Alumno/a: ${nombre}\nCurso: ${curso}\nFecha: ${fecha}\n\nRespuestas:\n`;
+
+      respuestas.forEach(r => {
+        texto += `\n${r.pregunta}\n→ ${r.seleccionados.join(", ") || "Ninguno"}\n`;
+      });
+
+      informe.innerText = texto;
+      informe.style.display = "block";
+    }
+
+    // Iniciar
+    cargarPregunta();
+  </script>
+</body>
+</html>
