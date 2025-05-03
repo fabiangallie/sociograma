@@ -2,37 +2,22 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Informes de Grupos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Informes</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <div class="title-box azul">
-      <h1 class="title-grande">Informes y Resultados</h1>
-      <p>Consulta informes por curso</p>
+    <h1 class="titulo-destacado">Informes del Grupo</h1>
+
+    <p>Aquí aparecerán los resultados individuales y generales del sociograma.</p>
+
+    <!-- Aquí se mostrarán gráficas y datos dinámicamente -->
+    <div class="botones-idioma">
+      <a href="#" class="btn-moderno">Descargar PDF</a>
+      <a href="#" class="btn-moderno">Ver Gráficas</a>
     </div>
-
-    <form class="form">
-      <label for="curso-select">Selecciona un curso:</label>
-      <select id="curso-select" name="curso">
-        <!-- Aquí se cargarán los cursos disponibles -->
-      </select>
-      <button type="submit" class="btn">Ver informe</button>
-    </form>
-
-    <div id="informe-resultado">
-      <!-- Aquí se mostrará la gráfica o los datos -->
-    </div>
-
-    <script>
-      document.querySelector("form").addEventListener("submit", function(e) {
-        e.preventDefault();
-        const curso = document.getElementById("curso-select").value;
-        document.getElementById("informe-resultado").innerHTML = `<p>Mostrando informe para <strong>${curso}</strong>...</p>`;
-        // Aquí cargarías el informe real
-      });
-    </script>
   </div>
 </body>
 </html>
+
