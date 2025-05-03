@@ -1,71 +1,96 @@
-@import url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap');
-
+/* Estilo base */
 body {
-  font-family: 'Fredoka', sans-serif;
   margin: 0;
-  padding: 0;
-  background: linear-gradient(135deg, #eef6ff, #f9fcff);
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(to right, #f7f7f7, #e0e0f0);
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  min-height: 100vh;
-  text-align: center;
-  color: #2c3e50;
+  align-items: center;
+  height: 100vh;
+  padding: 1rem;
+  box-sizing: border-box;
 }
 
 .container {
-  background: white;
-  padding: 2.5em;
+  text-align: center;
+  padding: 2rem;
+  max-width: 600px;
+  width: 100%;
+  background-color: white;
   border-radius: 16px;
-  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
-  max-width: 500px;
-  width: 90%;
-  margin: 1em;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
 }
 
-h1 {
-  font-size: 3em;
-  font-weight: 600;
-  margin: 0.2em 0;
-  text-shadow: 1px 1px 2px #ccc;
+.logo {
+  max-width: 180px;
+  width: 100%;
+  margin-bottom: 1.5rem;
 }
 
-h2 {
-  font-size: 2em;
-  font-weight: 400;
-  margin: 0.2em 0 1em;
-  color: #3498db;
-  text-shadow: 1px 1px 1px #ddeefc;
+.title-box {
+  background-color: #ffd166;
+  padding: 1rem;
+  border-radius: 12px;
+  display: inline-block;
+  margin-bottom: 0.5rem;
 }
 
-button {
+.title-escola {
+  font-size: 2.5rem;
+  color: #333;
+  margin: 0;
+}
+
+.subtitle {
+  font-size: 2rem;
+  color: #555;
+  margin-top: 0;
+}
+
+.language-buttons {
+  margin-top: 2rem;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.btn {
+  text-decoration: none;
+  padding: 0.8rem 2rem;
+  font-size: 1.2rem;
+  border-radius: 12px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  transition: background 0.3s ease;
   background-color: #3498db;
   color: white;
-  font-size: 1.1em;
-  padding: 0.7em 1.4em;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  box-shadow: 2px 4px 6px rgba(0,0,0,0.1);
-  transition: all 0.2s ease-in-out;
 }
 
-button:hover {
+.btn:hover {
   background-color: #2980b9;
-  transform: translateY(-2px);
-  box-shadow: 2px 6px 12px rgba(0,0,0,0.15);
 }
 
-select, input {
-  font-size: 1em;
-  padding: 0.6em 1.2em;
-  margin: 0.5em 0;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  width: 90%;
-  max-width: 300px;
+/* Responsivo para móviles */
+@media (max-width: 480px) {
+  .title-escola {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 1.5rem;
+  }
+
+  .btn {
+    width: 100%;
+    padding: 1rem;
+    font-size: 1rem;
+  }
+
+  .logo {
+    max-width: 120px;
+  }
 }
+
 
 
 
