@@ -3,76 +3,35 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Acceso alumno/a</title>
+  <title>Panel Alumnado</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <h2 id="titulo">Acceso para alumnado</h2>
+    <div class="title-box azul">
+      <h1 class="title-grande">Panel Alumnado</h1>
+      <p>Selecciona tu curso y nombre para comenzar</p>
+    </div>
 
-    <select id="grupo" onchange="cargarNombres()">
-      <option value="">Selecciona curso e data</option>
-    </select>
-    <br>
+    <form class="form">
+      <label for="curso">Curso:</label>
+      <select id="curso" name="curso">
+        <!-- Cursos disponibles se cargarán dinámicamente -->
+      </select>
 
-    <select id="nombre">
-      <option value="">Selecciona o teu nome</option>
-    </select>
-    <br>
+      <label for="nombre">Nombre:</label>
+      <select id="nombre" name="nombre">
+        <!-- Nombres se cargarán según el curso -->
+      </select>
 
-    <button onclick="continuar()">Continuar</button>
+      <button type="submit" class="btn">Comenzar Sociograma</button>
+    </form>
+
+    <script src="js/alumno-acceso.js"></script>
   </div>
-
-  <script>
-    const lang = localStorage.getItem("lang") || "es";
-
-    function cargarGrupos() {
-      const selector = document.getElementById("grupo");
-      selector.innerHTML = '<option value="">Selecciona curso e data</option>';
-      Object.keys(localStorage).forEach(key => {
-        if (key.startsWith("grupo_")) {
-          const opcion = document.createElement("option");
-          opcion.value = key;
-          opcion.textContent = key.replace("grupo_", "").replace("_", " - ");
-          selector.appendChild(opcion);
-        }
-      });
-    }
-
-    function cargarNombres() {
-      const grupo = document.getElementById("grupo").value;
-      const selector = document.getElementById("nombre");
-      selector.innerHTML = '<option value="">Selecciona o teu nome</option>';
-      if (grupo && localStorage.getItem(grupo)) {
-        const alumnos = JSON.parse(localStorage.getItem(grupo));
-        alumnos.forEach(nombre => {
-          const opt = document.createElement("option");
-          opt.value = nombre;
-          opt.textContent = nombre;
-          selector.appendChild(opt);
-        });
-      }
-    }
-
-    function continuar() {
-      const grupo = document.getElementById("grupo").value;
-      const nombre = document.getElementById("nombre").value;
-      if (!grupo || !nombre) {
-        alert(lang === "gl" ? "Escolle grupo e nome." : "Selecciona grupo y nombre.");
-        return;
-      }
-
-      const [curso, fecha] = grupo.replace("grupo_", "").split("_");
-      localStorage.setItem("alumno_nombre", nombre);
-      localStorage.setItem("alumno_curso", curso);
-      localStorage.setItem("alumno_fecha", fecha);
-      window.location.href = "sociograma.html";
-    }
-
-    cargarGrupos();
-  </script>
 </body>
 </html>
+
 
 
 
