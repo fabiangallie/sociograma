@@ -2,16 +2,15 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
+  <meta http-equiv="Cache-Control" content="no-store" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Escola Diversa</title>
   <link rel="stylesheet" href="style.css" />
   <link rel="icon" type="image/png" href="img/favicon.png"/>
   <script>
-    // Limpiar almacenamiento local al cargar
-    window.onload = () => {
-      localStorage.clear();
-      sessionStorage.clear();
-    };
+    // Limpiar completamente al cargar el documento
+    localStorage.clear();
+    sessionStorage.clear();
   </script>
 </head>
 <body>
@@ -31,4 +30,6 @@
   </div>
 </body>
 </html>
+
+
 
