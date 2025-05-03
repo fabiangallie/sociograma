@@ -1,11 +1,3 @@
-/* Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
-/* Estilo general */
 body {
   font-family: 'Segoe UI', sans-serif;
   background: linear-gradient(to bottom right, #f0f8ff, #e0f7fa);
