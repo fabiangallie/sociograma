@@ -3,177 +3,142 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sociograma</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Test Sociométrico</title>
   <style>
     body {
-      font-family: 'Arial Rounded MT Bold', sans-serif;
-      background-color: #f0f8ff;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to bottom, #e0f7fa, #ffffff);
       margin: 0;
       padding: 0;
-    }
-
-    .container {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 30px;
       text-align: center;
     }
 
     h1 {
-      color: #333;
-      font-size: 2.5rem;
-    }
-
-    .instructions {
-      font-size: 1.2rem;
-      margin: 20px auto;
-      background-color: #e6f0ff;
-      border-left: 5px solid #4a90e2;
-      padding: 15px;
-      border-radius: 8px;
-      text-align: left;
+      font-size: 2em;
+      color: #1976d2;
     }
 
     .hidden {
       display: none;
     }
 
-    .question {
-      font-size: 1.5rem;
-      margin-top: 30px;
-    }
-
     .students {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 20px;
-      margin-top: 30px;
+      gap: 10px;
+      padding: 15px;
+      border: 2px dashed #90caf9;
+      margin: 20px auto;
+      width: 90%;
+      min-height: 100px;
+      background-color: #ffffffcc;
+      border-radius: 10px;
     }
 
     .student {
-      width: 120px;
-      height: 160px;
-      background-color: #fff;
-      border: 2px dashed #ccc;
-      border-radius: 10px;
-      padding: 10px;
+      width: 80px;
+      text-align: center;
       cursor: grab;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
     }
 
     .student img {
       width: 60px;
-      height: 60px;
-      margin-bottom: 10px;
     }
 
-    .student p {
-      margin: 0;
-      font-size: 1rem;
-      color: #444;
-    }
-
-    .drop-zone {
+    .drop-area {
       display: flex;
-      justify-content: space-around;
-      align-items: center;
-      margin-top: 40px;
+      justify-content: center;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin: 30px auto;
+      max-width: 600px;
     }
 
     .drop-box {
-      width: 120px;
-      height: 150px;
-      background-color: #f9f9f9;
-      border: 3px solid #4a90e2;
+      width: 80px;
+      height: 100px;
+      border: 2px dashed #64b5f6;
       border-radius: 10px;
-      padding: 10px;
-      text-align: center;
+      background-color: #e3f2fd;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      padding: 5px;
     }
 
-    .drop-box p {
-      font-size: 1rem;
-      margin-bottom: 10px;
+    .drop-box span {
       font-weight: bold;
+      margin-bottom: 5px;
     }
 
-    .nav-buttons {
-      margin-top: 40px;
-    }
-
-    .nav-buttons button {
-      padding: 12px 30px;
-      font-size: 1.1rem;
-      border: none;
-      border-radius: 8px;
-      background-color: #4a90e2;
+    button {
+      background-color: #42a5f5;
       color: white;
+      padding: 10px 20px;
+      margin: 20px 10px;
+      border: none;
+      border-radius: 20px;
       cursor: pointer;
-      margin: 0 10px;
-      transition: background 0.3s;
+      font-size: 1em;
     }
 
-    .nav-buttons button:hover {
-      background-color: #357ABD;
+    button:hover {
+      background-color: #1e88e5;
+    }
+
+    .instructions {
+      padding: 20px;
+      font-size: 1.1em;
+      background-color: #bbdefb;
+      margin: 20px auto;
+      width: 80%;
+      border-radius: 10px;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <!-- Pantalla de bienvenida -->
-    <div id="pantallaBienvenida">
-      <h1>Benvido/a, <span id="nombreAlumno">[Nome]</span></h1>
-      <div class="instructions">
-        <p>Este é un test importante. Responde con sinceridade.</p>
-        <p>Podes escoller de 0 a 5 compañeiros para cada pregunta.</p>
-        <p>Arrastra as siluetas aos cadros numerados segundo a túa preferencia.</p>
-        <p>Podes cambiar de opinión antes de continuar.</p>
-      </div>
-      <button onclick="comenzarTest()">Comezar</button>
+  <div id="pantallaBienvenida">
+    <h1>Bienvenido/a <span id="nombreAlumno"></span></h1>
+    <div class="instructions">
+      <p>Vas a realizar un test muy importante. Contesta con sinceridad.</p>
+      <p>Arrastra de 0 a 5 compañeros en orden de preferencia. Puedes moverlos si te equivocas.</p>
+      <p>Haz clic en "Comenzar" para empezar.</p>
+    </div>
+    <button onclick="comenzarTest()">Comenzar</button>
+  </div>
+
+  <div id="pantallaTest" class="hidden">
+    <h2>¿Con quién te gusta jugar en el recreo?</h2>
+
+    <div class="students" id="listaAlumnos" ondrop="drop(event)" ondragover="allowDrop(event)">
+      <!-- Alumnos se insertan aquí -->
     </div>
 
-    <!-- Pantalla del test -->
-    <div id="pantallaTest" class="hidden">
-      <div class="question" id="preguntaActual">
-        Con quen che gusta xogar no recreo?
+    <div class="drop-area">
+      <div class="drop-box" ondrop="drop(event)" ondragover="allowDrop(event)">
+        <span>1º</span>
       </div>
-
-      <div class="students" id="listaAlumnos">
-        <!-- Alumnos insertados con JS -->
+      <div class="drop-box" ondrop="drop(event)" ondragover="allowDrop(event)">
+        <span>2º</span>
       </div>
-
-      <div class="drop-zone">
-        <div class="drop-box" ondrop="drop(event)" ondragover="allowDrop(event)">
-          <p>1º</p>
-        </div>
-        <div class="drop-box" ondrop="drop(event)" ondragover="allowDrop(event)">
-          <p>2º</p>
-        </div>
-        <div class="drop-box" ondrop="drop(event)" ondragover="allowDrop(event)">
-          <p>3º</p>
-        </div>
-        <div class="drop-box" ondrop="drop(event)" ondragover="allowDrop(event)">
-          <p>4º</p>
-        </div>
-        <div class="drop-box" ondrop="drop(event)" ondragover="allowDrop(event)">
-          <p>5º</p>
-        </div>
+      <div class="drop-box" ondrop="drop(event)" ondragover="allowDrop(event)">
+        <span>3º</span>
       </div>
-
-      <div class="nav-buttons">
-        <button onclick="anteriorPregunta()">Anterior</button>
-        <button onclick="siguientePregunta()">Seguinte</button>
+      <div class="drop-box" ondrop="drop(event)" ondragover="allowDrop(event)">
+        <span>4º</span>
+      </div>
+      <div class="drop-box" ondrop="drop(event)" ondragover="allowDrop(event)">
+        <span>5º</span>
       </div>
     </div>
+
+    <button onclick="anteriorPregunta()">Anterior</button>
+    <button onclick="siguientePregunta()">Siguiente</button>
   </div>
 
   <script>
-    // Obtener nombre desde URL si está
     const params = new URLSearchParams(window.location.search);
     const alumno = params.get("nombre") || "Alumno/a";
     document.getElementById("nombreAlumno").textContent = alumno;
@@ -211,9 +176,14 @@
       ev.preventDefault();
       const data = ev.dataTransfer.getData("text");
       const dropped = document.getElementById(data);
-      if (ev.target.classList.contains("drop-box")) {
+
+      if (ev.target.classList.contains("drop-box") && ev.target.children.length > 1) {
+        ev.target.removeChild(ev.target.lastChild);
+      }
+
+      if (ev.target.classList.contains("drop-box") || ev.target.classList.contains("students")) {
         ev.target.appendChild(dropped);
-      } else if (ev.target.parentElement.classList.contains("drop-box")) {
+      } else if (ev.target.parentElement.classList.contains("drop-box") || ev.target.parentElement.classList.contains("students")) {
         ev.target.parentElement.appendChild(dropped);
       }
     }
@@ -224,79 +194,16 @@
     }
 
     function siguientePregunta() {
-      // Lógica para avanzar
+      alert("Aquí iría la siguiente pregunta.");
     }
 
     function anteriorPregunta() {
-      // Lógica para retroceder
+      alert("Aquí iría la pregunta anterior.");
     }
-  <script>
-  const params = new URLSearchParams(window.location.search);
-  const alumno = params.get("nombre") || "Alumno/a";
-  document.getElementById("nombreAlumno").textContent = alumno;
-
-  const nombres = ["Mateo", "Sofía", "Diego", "Iria", "Leo", "Naiara", "Lucas", "Sara"];
-  const listaAlumnos = document.getElementById("listaAlumnos");
-
-  nombres.forEach((nombre, index) => {
-    const div = document.createElement("div");
-    div.className = "student";
-    div.draggable = true;
-    div.id = "alumno-" + index;
-    div.ondragstart = drag;
-
-    const img = document.createElement("img");
-    img.src = "img/silueta" + ((index % 4) + 1) + ".png";
-
-    const p = document.createElement("p");
-    p.textContent = nombre;
-
-    div.appendChild(img);
-    div.appendChild(p);
-    listaAlumnos.appendChild(div);
-  });
-
-  function allowDrop(ev) {
-    ev.preventDefault();
-  }
-
-  function drag(ev) {
-    ev.dataTransfer.setData("text", ev.target.id);
-  }
-
-  function drop(ev) {
-    ev.preventDefault();
-    const data = ev.dataTransfer.getData("text");
-    const dropped = document.getElementById(data);
-
-    // Si el contenedor ya tiene un niño, lo mueve de vuelta
-    if (ev.target.classList.contains("drop-box") && ev.target.children.length > 1) {
-      ev.target.removeChild(ev.target.lastChild);
-    }
-
-    if (ev.target.classList.contains("drop-box") || ev.target.classList.contains("students")) {
-      ev.target.appendChild(dropped);
-    } else if (ev.target.parentElement.classList.contains("drop-box") || ev.target.parentElement.classList.contains("students")) {
-      ev.target.parentElement.appendChild(dropped);
-    }
-  }
-
-  function comenzarTest() {
-    document.getElementById("pantallaBienvenida").classList.add("hidden");
-    document.getElementById("pantallaTest").classList.remove("hidden");
-  }
-
-  function siguientePregunta() {
-    // Lógica para avanzar
-  }
-
-  function anteriorPregunta() {
-    // Lógica para retroceder
-  }
-</script>
-
+  </script>
 </body>
 </html>
+
 
 
 
