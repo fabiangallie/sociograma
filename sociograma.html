@@ -1,208 +1,349 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Test Sociométrico</title>
+  <meta charset="UTF-8">
+  <title>Sociograma Escolar</title>
   <style>
     body {
-      font-family: 'Segoe UI', sans-serif;
-      background: linear-gradient(to bottom, #e0f7fa, #ffffff);
-      margin: 0;
-      padding: 0;
+      background-color: #f0f8ff;
+      font-family: Arial, sans-serif;
+      margin: 20px;
+      color: #333;
+    }
+    h1, h2 {
+      color: #0056b3;
+    }
+    #welcomeScreen {
       text-align: center;
     }
-
-    h1 {
-      font-size: 2em;
-      color: #1976d2;
+    #welcomeScreen h1 {
+      margin-top: 50px;
     }
-
-    .hidden {
-      display: none;
-    }
-
-    .students {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 10px;
-      padding: 15px;
-      border: 2px dashed #90caf9;
-      margin: 20px auto;
-      width: 90%;
-      min-height: 100px;
-      background-color: #ffffffcc;
-      border-radius: 10px;
-    }
-
-    .student {
-      width: 80px;
-      text-align: center;
-      cursor: grab;
-    }
-
-    .student img {
-      width: 60px;
-    }
-
-    .drop-area {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      flex-wrap: wrap;
-      margin: 30px auto;
-      max-width: 600px;
-    }
-
-    .drop-box {
-      width: 80px;
-      height: 100px;
-      border: 2px dashed #64b5f6;
-      border-radius: 10px;
-      background-color: #e3f2fd;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-direction: column;
-      padding: 5px;
-    }
-
-    .drop-box span {
-      font-weight: bold;
-      margin-bottom: 5px;
-    }
-
-    button {
-      background-color: #42a5f5;
+    .btn {
+      background-color: #007bff;
       color: white;
       padding: 10px 20px;
-      margin: 20px 10px;
+      margin: 10px 5px;
       border: none;
-      border-radius: 20px;
+      border-radius: 5px;
       cursor: pointer;
       font-size: 1em;
     }
-
-    button:hover {
-      background-color: #1e88e5;
+    .btn:hover {
+      background-color: #0056b3;
     }
-
-    .instructions {
-      padding: 20px;
-      font-size: 1.1em;
-      background-color: #bbdefb;
+    ul.instrucciones {
+      text-align: left;
+      display: inline-block;
+      max-width: 600px;
+      margin: 20px 0;
+    }
+    ul.instrucciones li {
+      margin-bottom: 10px;
+    }
+    .question-container {
+      display: none;
+      text-align: center;
+      margin-top: 20px;
+    }
+    .pool {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
       margin: 20px auto;
-      width: 80%;
-      border-radius: 10px;
+      max-width: 800px;
+      min-height: 120px;
+      border: 1px solid #ccc;
+      padding: 10px;
+      border-radius: 5px;
+    }
+    .student {
+      margin: 10px;
+      text-align: center;
+      cursor: move;
+    }
+    .student img {
+      width: 80px;
+      height: 80px;
+    }
+    .dropzones {
+      margin: 20px 0;
+    }
+    .dropzone {
+      width: 100px;
+      height: 120px;
+      border: 2px dashed #aaa;
+      border-radius: 5px;
+      margin: 0 10px;
+      display: inline-block;
+      vertical-align: top;
+      text-align: center;
+      position: relative;
+      background-color: #fff;
+    }
+    .dropzone .label {
+      position: absolute;
+      top: -20px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-weight: bold;
+      background: #f0f8ff;
+      padding: 2px 5px;
+      color: #333;
+    }
+    .dropzone .student {
+      margin: 0;
+      position: static;
+      top: auto;
+      left: auto;
+    }
+    #buttons {
+      margin-top: 20px;
     }
   </style>
 </head>
 <body>
-  <div id="pantallaBienvenida">
-    <h1>Bienvenido/a <span id="nombreAlumno"></span></h1>
-    <div class="instructions">
-      <p>Vas a realizar un test muy importante. Contesta con sinceridad.</p>
-      <p>Arrastra de 0 a 5 compañeros en orden de preferencia. Puedes moverlos si te equivocas.</p>
-      <p>Haz clic en "Comenzar" para empezar.</p>
-    </div>
-    <button onclick="comenzarTest()">Comenzar</button>
+  <!-- Pantalla de bienvenida -->
+  <div id="welcomeScreen">
+    <h1>Bienvenido, <span id="nombreAlumno">Alumno</span>!</h1>
+    <p>Instrucciones:</p>
+    <ul class="instrucciones">
+      <li>Arrastra de <strong>0</strong> a <strong>5</strong> compañeros por pregunta en orden de preferencia.</li>
+      <li>Puedes rectificar tus elecciones en cualquier momento antes de avanzar.</li>
+      <li>Cuando termines una pregunta, haz clic en "Siguiente" para continuar.</li>
+    </ul>
+    <button class="btn" id="startButton">Iniciar Test</button>
   </div>
 
-  <div id="pantallaTest" class="hidden">
-    <h2>¿Con quién te gusta jugar en el recreo?</h2>
-
-    <div class="students" id="listaAlumnos" ondrop="drop(event)" ondragover="allowDrop(event)">
-      <!-- Alumnos se insertan aquí -->
+  <!-- Pregunta 1 -->
+  <div class="question-container" id="question1">
+    <h2>Pregunta 1: ¿Con quién prefieres jugar durante el recreo?</h2>
+    <div class="pool" id="pool1"></div>
+    <p>Orden de preferencia:</p>
+    <div class="dropzones">
+      <div class="dropzone" data-position="1"><span class="label">1º</span></div>
+      <div class="dropzone" data-position="2"><span class="label">2º</span></div>
+      <div class="dropzone" data-position="3"><span class="label">3º</span></div>
+      <div class="dropzone" data-position="4"><span class="label">4º</span></div>
+      <div class="dropzone" data-position="5"><span class="label">5º</span></div>
     </div>
-
-    <div class="drop-area">
-      <div class="drop-box" ondrop="drop(event)" ondragover="allowDrop(event)">
-        <span>1º</span>
-      </div>
-      <div class="drop-box" ondrop="drop(event)" ondragover="allowDrop(event)">
-        <span>2º</span>
-      </div>
-      <div class="drop-box" ondrop="drop(event)" ondragover="allowDrop(event)">
-        <span>3º</span>
-      </div>
-      <div class="drop-box" ondrop="drop(event)" ondragover="allowDrop(event)">
-        <span>4º</span>
-      </div>
-      <div class="drop-box" ondrop="drop(event)" ondragover="allowDrop(event)">
-        <span>5º</span>
-      </div>
+    <div id="buttons">
+      <button class="btn" id="next1">Siguiente</button>
     </div>
+  </div>
 
-    <button onclick="anteriorPregunta()">Anterior</button>
-    <button onclick="siguientePregunta()">Siguiente</button>
+  <!-- Pregunta 2 -->
+  <div class="question-container" id="question2">
+    <h2>Pregunta 2: ¿A quién pedirías ayuda con los deberes?</h2>
+    <div class="pool" id="pool2"></div>
+    <p>Orden de preferencia:</p>
+    <div class="dropzones">
+      <div class="dropzone" data-position="1"><span class="label">1º</span></div>
+      <div class="dropzone" data-position="2"><span class="label">2º</span></div>
+      <div class="dropzone" data-position="3"><span class="label">3º</span></div>
+      <div class="dropzone" data-position="4"><span class="label">4º</span></div>
+      <div class="dropzone" data-position="5"><span class="label">5º</span></div>
+    </div>
+    <div id="buttons">
+      <button class="btn" id="prev2">Anterior</button>
+      <button class="btn" id="next2">Siguiente</button>
+    </div>
+  </div>
+
+  <!-- Pregunta 3 -->
+  <div class="question-container" id="question3">
+    <h2>Pregunta 3: ¿Con quién te gustaría trabajar en equipo?</h2>
+    <div class="pool" id="pool3"></div>
+    <p>Orden de preferencia:</p>
+    <div class="dropzones">
+      <div class="dropzone" data-position="1"><span class="label">1º</span></div>
+      <div class="dropzone" data-position="2"><span class="label">2º</span></div>
+      <div class="dropzone" data-position="3"><span class="label">3º</span></div>
+      <div class="dropzone" data-position="4"><span class="label">4º</span></div>
+      <div class="dropzone" data-position="5"><span class="label">5º</span></div>
+    </div>
+    <div id="buttons">
+      <button class="btn" id="prev3">Anterior</button>
+      <button class="btn" id="next3">Siguiente</button>
+    </div>
+  </div>
+
+  <!-- Pregunta 4 -->
+  <div class="question-container" id="question4">
+    <h2>Pregunta 4: ¿Con quién compartirías un secreto?</h2>
+    <div class="pool" id="pool4"></div>
+    <p>Orden de preferencia:</p>
+    <div class="dropzones">
+      <div class="dropzone" data-position="1"><span class="label">1º</span></div>
+      <div class="dropzone" data-position="2"><span class="label">2º</span></div>
+      <div class="dropzone" data-position="3"><span class="label">3º</span></div>
+      <div class="dropzone" data-position="4"><span class="label">4º</span></div>
+      <div class="dropzone" data-position="5"><span class="label">5º</span></div>
+    </div>
+    <div id="buttons">
+      <button class="btn" id="prev4">Anterior</button>
+      <button class="btn" id="next4">Finalizar</button>
+    </div>
   </div>
 
   <script>
-    const params = new URLSearchParams(window.location.search);
-    const alumno = params.get("nombre") || "Alumno/a";
-    document.getElementById("nombreAlumno").textContent = alumno;
+    // Lista de nombres de ejemplo (compañeros)
+    const nombres = ["Juan", "Ana", "Carlos", "Lucia", "Pedro", "Sofia", "Miguel", "Maria", "Luis", "Carmen"];
+    // Variables de control
+    let currentQuestion = 0;
+    const answers = [[], [], [], []];  // Almacenará respuestas de cada pregunta
 
-    const nombres = ["Mateo", "Sofía", "Diego", "Iria", "Leo", "Naiara", "Lucas", "Sara"];
-    const listaAlumnos = document.getElementById("listaAlumnos");
+    // Función para leer parámetros de URL
+    function getParameterByName(name) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(name);
+    }
 
-    nombres.forEach((nombre, index) => {
-      const div = document.createElement("div");
-      div.className = "student";
-      div.draggable = true;
-      div.id = "alumno-" + index;
-      div.ondragstart = drag;
-
-      const img = document.createElement("img");
-      img.src = "img/silueta" + ((index % 4) + 1) + ".png";
-
-      const p = document.createElement("p");
-      p.textContent = nombre;
-
-      div.appendChild(img);
-      div.appendChild(p);
-      listaAlumnos.appendChild(div);
+    document.addEventListener('DOMContentLoaded', () => {
+      // Mostrar nombre del alumno en pantalla de bienvenida
+      const nombre = getParameterByName('nombre');
+      if (nombre) {
+        document.getElementById('nombreAlumno').textContent = nombre;
+      }
+      // Habilitar drag&drop para estudiantes (se crearán dinámicamente más adelante)
+      document.querySelectorAll('.dropzone').forEach(zone => {
+        zone.addEventListener('dragover', e => e.preventDefault());
+        zone.addEventListener('drop', dropToZone);
+      });
+      document.querySelectorAll('.pool').forEach(pool => {
+        pool.addEventListener('dragover', e => e.preventDefault());
+        pool.addEventListener('drop', dropToPool);
+      });
+      // Eventos de botones de navegación
+      document.getElementById('startButton').addEventListener('click', () => {
+        document.getElementById('welcomeScreen').style.display = 'none';
+        currentQuestion = 1;
+        showQuestion(currentQuestion);
+      });
+      document.getElementById('next1').addEventListener('click', () => nextQuestion(1));
+      document.getElementById('prev2').addEventListener('click', () => prevQuestion(2));
+      document.getElementById('next2').addEventListener('click', () => nextQuestion(2));
+      document.getElementById('prev3').addEventListener('click', () => prevQuestion(3));
+      document.getElementById('next3').addEventListener('click', () => nextQuestion(3));
+      document.getElementById('prev4').addEventListener('click', () => prevQuestion(4));
+      document.getElementById('next4').addEventListener('click', finishQuiz);
     });
 
-    function allowDrop(ev) {
-      ev.preventDefault();
+    // Inicio de arrastre: guardamos el ID del elemento
+    function dragStart(event) {
+      event.dataTransfer.setData('text/plain', event.target.id);
     }
-
-    function drag(ev) {
-      ev.dataTransfer.setData("text", ev.target.id);
-    }
-
-    function drop(ev) {
-      ev.preventDefault();
-      const data = ev.dataTransfer.getData("text");
-      const dropped = document.getElementById(data);
-
-      if (ev.target.classList.contains("drop-box") && ev.target.children.length > 1) {
-        ev.target.removeChild(ev.target.lastChild);
+    // Al soltar sobre zona numerada
+    function dropToZone(event) {
+      event.preventDefault();
+      const id = event.dataTransfer.getData('text/plain');
+      const student = document.getElementById(id);
+      const questionDiv = event.currentTarget.closest('.question-container');
+      // Si la zona ya tenía un estudiante, lo devolvemos al pool
+      const existing = questionDiv.querySelector('.dropzone[data-position="' +
+                          event.currentTarget.getAttribute('data-position') +
+                          '"] .student');
+      if (existing) {
+        questionDiv.querySelector('.pool').appendChild(existing);
       }
-
-      if (ev.target.classList.contains("drop-box") || ev.target.classList.contains("students")) {
-        ev.target.appendChild(dropped);
-      } else if (ev.target.parentElement.classList.contains("drop-box") || ev.target.parentElement.classList.contains("students")) {
-        ev.target.parentElement.appendChild(dropped);
-      }
+      // Añadir el estudiante arrastrado a la zona de preferencia
+      event.currentTarget.appendChild(student);
     }
-
-    function comenzarTest() {
-      document.getElementById("pantallaBienvenida").classList.add("hidden");
-      document.getElementById("pantallaTest").classList.remove("hidden");
+    // Al soltar sobre el pool de estudiantes
+    function dropToPool(event) {
+      event.preventDefault();
+      const id = event.dataTransfer.getData('text/plain');
+      const student = document.getElementById(id);
+      event.currentTarget.appendChild(student);
     }
-
-    function siguientePregunta() {
-      alert("Aquí iría la siguiente pregunta.");
+    // Mostrar pregunta X
+    function showQuestion(num) {
+      const questionDiv = document.getElementById('question' + num);
+      questionDiv.style.display = 'block';
+      populateQuestion(num);
     }
-
-    function anteriorPregunta() {
-      alert("Aquí iría la pregunta anterior.");
+    // Ocultar pregunta X
+    function hideQuestion(num) {
+      const questionDiv = document.getElementById('question' + num);
+      questionDiv.style.display = 'none';
+    }
+    // Poblamos los compañeros en el pool y en las zonas según respuestas previas
+    function populateQuestion(num) {
+      const index = num - 1;
+      const questionDiv = document.getElementById('question' + num);
+      const pool = questionDiv.querySelector('.pool');
+      // Limpiar contenido previo
+      pool.innerHTML = '';
+      questionDiv.querySelectorAll('.dropzone').forEach(zone => {
+        const studentElem = zone.querySelector('.student');
+        if (studentElem) zone.removeChild(studentElem);
+      });
+      // Añadir todos los compañeros que NO estén ya en las respuestas guardadas
+      nombres.forEach(name => {
+        if (!answers[index].includes(name)) {
+          const div = document.createElement('div');
+          div.className = 'student';
+          div.draggable = true;
+          div.id = 'student_' + name;
+          div.addEventListener('dragstart', dragStart);
+          const img = document.createElement('img');
+          img.src = 'img/silueta1.png';
+          img.alt = 'compañero';
+          const span = document.createElement('span');
+          span.textContent = name;
+          div.appendChild(img);
+          div.appendChild(span);
+          pool.appendChild(div);
+        }
+      });
+      // Colocar en las zonas las respuestas guardadas previamente
+      answers[index].forEach((name, i) => {
+        if (name) {
+          const studentElem = document.getElementById('student_' + name);
+          const zone = questionDiv.querySelector('.dropzone[data-position="' + (i+1) + '"]');
+          if (studentElem) zone.appendChild(studentElem);
+        }
+      });
+    }
+    // Guardar respuestas de la pregunta actual en el array `answers`
+    function saveAnswers(num) {
+      const index = num - 1;
+      const questionDiv = document.getElementById('question' + num);
+      const arr = [null, null, null, null, null];
+      questionDiv.querySelectorAll('.dropzone').forEach(zone => {
+        const pos = zone.getAttribute('data-position');
+        const student = zone.querySelector('.student span');
+        if (student) {
+          arr[pos-1] = student.textContent;
+        }
+      });
+      // Filtrar valores nulos (casillas vacías) y guardar
+      answers[index] = arr.filter(item => item);
+    }
+    // Ir a la siguiente pregunta
+    function nextQuestion(num) {
+      saveAnswers(num);
+      hideQuestion(num);
+      currentQuestion = num + 1;
+      showQuestion(currentQuestion);
+    }
+    // Volver a la pregunta anterior
+    function prevQuestion(num) {
+      saveAnswers(num);
+      hideQuestion(num);
+      currentQuestion = num - 1;
+      showQuestion(currentQuestion);
+    }
+    // Finalizar el test
+    function finishQuiz() {
+      saveAnswers(4);
+      alert('Test completado. ¡Gracias por participar!');
+      // Aquí se podrían procesar o enviar las respuestas `answers`
     }
   </script>
 </body>
 </html>
+
 
 
 
