@@ -3,25 +3,32 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sociograma Escola Diversa</title>
+  <title>Escola Diversa</title>
   <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/png" href="img/favicon.png"/>
+  <script>
+    // Limpiar almacenamiento local al cargar
+    window.onload = () => {
+      localStorage.clear();
+      sessionStorage.clear();
+    };
+  </script>
 </head>
 <body>
   <div class="container">
-    <img src="corazon.png" alt="Corazón multicolor" class="logo" />
+    <img src="img/corazon-multicolor.png" alt="Corazón multicolor" class="logo" />
 
-    <div class="title-box">
-      <h1 class="title-grande">Escola Diversa</h1>
-      <h2 class="title-secundario">Sociograma</h2>
+    <div class="titulo-destacado">
+      <h1>Escola Diversa</h1>
     </div>
 
-    <div class="language-selection">
-     
-      <div class="button-group">
-        <a href="seleccion.html?lang=es" class="btn">Castellano</a>
-        <a href="seleccion.html?lang=gl" class="btn">Galego</a>
-      </div>
+    <h2 class="subtitulo">Sociograma</h2>
+
+    <div class="botones-idioma">
+      <a href="seleccion.html?lang=es" class="boton">Castellano</a>
+      <a href="seleccion.html?lang=gl" class="boton">Galego</a>
     </div>
   </div>
 </body>
 </html>
+
