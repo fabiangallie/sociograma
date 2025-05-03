@@ -1,35 +1,27 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta http-equiv="Cache-Control" content="no-store" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta charset="UTF-8">
   <title>Escola Diversa</title>
-  <link rel="stylesheet" href="style.css" />
-  <link rel="icon" type="image/png" href="img/favicon.png"/>
-  <script>
-    // Limpiar almacenamiento local al cargar la página
-    window.onload = () => {
-      localStorage.clear();
-      sessionStorage.clear();
-    };
-  </script>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <div class="container">
-    <img src="img/corazon-multicolor.png" alt="Corazón multicolor" class="logo" />
-
-    <div class="titulo-destacado">
-      <h1>Escola Diversa</h1>
-    </div>
-
-    <h2 class="subtitulo">Sociograma</h2>
-
-    <div class="botones-idioma">
-      <a href="seleccion.html?lang=es" class="boton">Castellano</a>
-      <a href="seleccion.html?lang=gl" class="boton">Galego</a>
+    <img src="img/corazon.png" alt="Corazón Escola Diversa" class="logo">
+    <h1 class="titulo">Escola Diversa</h1>
+    <div class="idioma-selector">
+      <button onclick="seleccionarIdioma('es')">Castellano</button>
+      <button onclick="seleccionarIdioma('gl')">Galego</button>
     </div>
   </div>
+
+  <script>
+    function seleccionarIdioma(idioma) {
+      localStorage.setItem('idioma', idioma);
+      window.location.href = "seleccion.html";
+    }
+  </script>
 </body>
 </html>
+
 
