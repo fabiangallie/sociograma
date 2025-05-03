@@ -1,75 +1,65 @@
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
-
 body {
-  font-family: Arial, sans-serif;
-  background-color: #fafafa;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f7f9fc;
   color: #333;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.main-container {
   text-align: center;
-  padding: 20px;
+  padding: 2rem;
+  background-color: white;
+  border-radius: 12px;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  width: 90%;
 }
 
-h1, h2 {
-  margin-bottom: 20px;
+h1 {
+  font-size: 2.2rem;
   color: #2c3e50;
+  background-color: #dbeeff;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  display: inline-block;
 }
 
-nav {
-  margin-bottom: 30px;
+h2 {
+  font-size: 1.4rem;
+  margin-top: 0.5rem;
+  color: #3498db;
 }
 
-nav a {
-  margin: 0 10px;
-  text-decoration: none;
-  color: #2c3e50;
-  font-weight: bold;
+.btn-group {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+  flex-wrap: wrap;
 }
 
-.container {
-  max-width: 800px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
-form {
-  margin-top: 20px;
-}
-
-input[type="text"], select {
-  padding: 10px;
-  margin: 10px 0;
-  width: 100%;
-  max-width: 300px;
-}
-
-button {
-  background-color: #3498db;
-  color: white;
+.btn-grad {
+  background: linear-gradient(45deg, #6fb1fc, #4364f7);
   border: none;
-  padding: 10px 20px;
-  margin: 10px 5px;
+  color: white;
+  padding: 0.8rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 30px;
   cursor: pointer;
-  font-size: 1em;
+  transition: background 0.3s ease, transform 0.2s ease;
 }
 
-button:hover {
-  background-color: #2980b9;
+.btn-grad:hover {
+  background: linear-gradient(45deg, #4364f7, #6fb1fc);
+  transform: scale(1.05);
 }
 
-.grid-alumnos {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-  gap: 10px;
-  margin-top: 20px;
-}
-
-.alumno {
-  background-color: #e0e0e0;
-  padding: 10px;
-  border-radius: 4px;
+a {
+  text-decoration: none;
 }
 
 
