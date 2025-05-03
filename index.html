@@ -7,26 +7,25 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div class="container">
-    <img src="img/corazon.png" alt="Corazón multicolor" class="imagen-index" />
-    
-    <h1 class="titulo">Escola Diversa</h1>
-    
-    <div class="idioma-selector">
-      <button onclick="seleccionarIdioma('es')">Castellano</button>
-      <button onclick="seleccionarIdioma('gl')">Galego</button>
-    </div>
-  </div>
+  <div class="contenedor">
+    <!-- Imagen -->
+    <img src="img/corazon.png" alt="Corazón multicolor" class="imagen-index"/>
 
-  <script>
-    function seleccionarIdioma(idioma) {
-      localStorage.clear(); // Para evitar errores acumulados
-      localStorage.setItem('idioma', idioma);
-      window.location.href = "seleccion.html";
-    }
-  </script>
+    <!-- Título en recuadro -->
+    <div class="titulo-recuadro">
+      <h1>Escola Diversa</h1>
+    </div>
+
+    <!-- Subtítulo -->
+    <h2>Sociograma</h2>
+
+    <!-- Botones de idioma -->
+    <button class="boton" onclick="window.location.href='seleccion.html?lang=es'">Castellano</button>
+    <button class="boton" onclick="window.location.href='seleccion.html?lang=gl'">Galego</button>
+  </div>
 </body>
 </html>
+
 
 
 
