@@ -1,14 +1,17 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Escola Diversa</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <img src="img/corazon.png" alt="Corazón Escola Diversa" class="logo">
+    <img src="img/corazon.png" alt="Corazón Escola Diversa" class="logo" />
+    
     <h1 class="titulo">Escola Diversa</h1>
+    
     <div class="idioma-selector">
       <button onclick="seleccionarIdioma('es')">Castellano</button>
       <button onclick="seleccionarIdioma('gl')">Galego</button>
@@ -17,15 +20,13 @@
 
   <script>
     function seleccionarIdioma(idioma) {
+      localStorage.clear(); // Para evitar errores acumulados
       localStorage.setItem('idioma', idioma);
       window.location.href = "seleccion.html";
     }
   </script>
-  <script>
-  localStorage.clear(); // Esto limpia datos antiguos
-</script>
-
 </body>
 </html>
+
 
 
