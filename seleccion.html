@@ -3,72 +3,27 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Seleccionar Alumno</title>
+  <title>Selecciona tipo de usuario</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <h1 class="titulo">Selecciona tu curso y tu nombre</h1>
+    <h1 class="titulo">Escola Diversa</h1>
+    <p class="subtitulo">¿Eres profesor/a o alumno/a?</p>
 
-    <div>
-      <label for="curso">Curso:</label><br/>
-      <select id="curso" onchange="cargarAlumnos()">
-        <option value="">-- Selecciona un curso --</option>
-        <option value="1A">1ºA</option>
-        <option value="1B">1ºB</option>
-        <option value="2A">2ºA</option>
-        <!-- Añade más cursos si es necesario -->
-      </select>
+    <div class="botones-usuario">
+      <button onclick="irA('acceso_alumno.html')">Alumno/a</button>
+      <button onclick="irA('acceso_profesor.html')">Profesor/a</button>
     </div>
-
-    <div style="margin-top: 20px;">
-      <label for="alumno">Nombre:</label><br/>
-      <select id="alumno">
-        <option value="">-- Selecciona tu nombre --</option>
-        <!-- Se rellenará según el curso -->
-      </select>
-    </div>
-
-    <button style="margin-top: 30px;" onclick="irAlSociograma()">Siguiente</button>
   </div>
 
   <script>
-    const alumnosPorCurso = {
-      '1A': ['Lucía', 'Manuel', 'Iria', 'Xoel'],
-      '1B': ['Carlos', 'Sara', 'Andrés', 'Noa'],
-      '2A': ['Laura', 'Hugo', 'Martina', 'Diego']
-    };
-
-    function cargarAlumnos() {
-      const curso = document.getElementById('curso').value;
-      const alumnoSelect = document.getElementById('alumno');
-      alumnoSelect.innerHTML = '<option value="">-- Selecciona tu nombre --</option>';
-
-      if (alumnosPorCurso[curso]) {
-        alumnosPorCurso[curso].forEach(nombre => {
-          const opt = document.createElement('option');
-          opt.value = nombre;
-          opt.textContent = nombre;
-          alumnoSelect.appendChild(opt);
-        });
-      }
-    }
-
-    function irAlSociograma() {
-      const curso = document.getElementById('curso').value;
-      const nombre = document.getElementById('alumno').value;
-
-      if (!curso || !nombre) {
-        alert('Por favor, selecciona curso y nombre.');
-        return;
-      }
-
-      localStorage.setItem('curso', curso);
-      localStorage.setItem('nombreAlumno', nombre);
-      window.location.href = "sociograma.html";
+    function irA(ruta) {
+      window.location.href = ruta;
     }
   </script>
 </body>
 </html>
+
 
 
