@@ -2,28 +2,28 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Selecciona tipo de usuario</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Selecciona tu perfil</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <h1 class="titulo">Escola Diversa</h1>
-    <p class="subtitulo">¿Eres profesor/a o alumno/a?</p>
+    <img src="img/corazon_multicolor.png" alt="Logo Escola Diversa" class="logo" />
+    <h1>Escola Diversa</h1>
+    <h2>Selecciona tu perfil</h2>
 
-    <div class="botones-usuario">
-      <button onclick="irA('acceso_alumno.html')">Alumno/a</button>
-      <button onclick="irA('acceso_profesor.html')">Profesor/a</button>
+    <div class="buttons">
+      <a href="acceso_alumno.html" class="btn">Alumno/a</a>
+      <a href="acceso_profesor.html" class="btn">Profesor/a</a>
     </div>
   </div>
 
-  <script>
-    function irA(ruta) {
-      window.location.href = ruta;
-    }
-  </script>
+  <footer>
+    &copy; 2025 Escola Diversa
+  </footer>
 </body>
 </html>
+
 
 
 
