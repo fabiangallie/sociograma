@@ -1,217 +1,90 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sociograma</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Test Sociométrico</title>
   <link rel="stylesheet" href="style.css" />
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: linear-gradient(to right, #f0f8ff, #e0ffe0);
-      font-family: 'Segoe UI', sans-serif;
-    }
-    .container {
-      min-height: 100vh;
-      width: 100%;
-      max-width: 1000px;
-      margin: auto;
-      padding: 2em 1em;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      align-items: center;
-      background: white;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
-      border-radius: 12px;
-    }
-    .names-list, .selection-box {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 1em;
-      padding: 1em;
-      margin: 1em auto;
-      background: #f8faff;
-      border-radius: 12px;
-      border: 2px dashed #cce0ff;
-      min-height: 120px;
-      max-width: 700px;
-    }
-    .card {
-      width: 100px;
-      height: 100px;
-      border-radius: 14px;
-      background: linear-gradient(145deg, #e3f2fd, #ffffff);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 6px 12px rgba(0,0,0,0.08);
-      font-size: 1em;
-      cursor: grab;
-      transition: transform 0.2s;
-    }
-    .card:hover {
-      transform: scale(1.05);
-      background: #d6eaff;
-    }
-    .icon {
-      font-size: 2.5em;
-    }
-    button {
-      font-size: 1.2em;
-      padding: 0.8em 1.5em;
-      margin-top: 1em;
-      border-radius: 12px;
-      background-color: #5dade2;
-      color: white;
-      border: none;
-      box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #3498db;
-      transform: translateY(-2px);
-    }
-    #informe {
-      margin-top: 2em;
-      padding: 1.5em;
-      background: #ffffff;
-      border-radius: 12px;
-      max-width: 600px;
-      margin-left: auto;
-      margin-right: auto;
-      white-space: pre-wrap;
-      border: 1px solid #ccc;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.06);
-      font-size: 1.05em;
-      text-align: center;
-    }
-  </style>
 </head>
 <body>
   <div class="container">
-    <h2 id="pregunta"></h2>
-    <div class="names-list" id="lista-nombres"></div>
-    <div class="selection-box" id="seleccion">Arrastra aquí tus elecciones (máx. 3)</div>
-    <button onclick="siguiente()">Siguiente</button>
-    <div id="informe" style="display:none;"></div>
+    <div class="title-box azul">
+      <h1 class="title-grande">Sociograma</h1>
+    </div>
+
+    <div id="bienvenida" class="form">
+      <!-- Saludo personalizado al alumno -->
+    </div>
+
+    <form id="form-sociograma" class="form">
+      <p>Selecciona a tus compañeros según se indica:</p>
+
+      <label for="eleccion1">¿Con quién te gustaría trabajar en clase?</label>
+      <select id="eleccion1" required>
+        <option value="">-- Elegir compañero/a --</option>
+      </select>
+
+      <label for="eleccion2">¿Con quién te gustaría jugar en el recreo?</label>
+      <select id="eleccion2" required>
+        <option value="">-- Elegir compañero/a --</option>
+      </select>
+
+      <button type="submit" class="btn">Enviar respuestas</button>
+    </form>
   </div>
 
   <script>
-    const lang = localStorage.getItem('lang') || 'es';
-    const preguntas = {
-      es: [
-        "¿Con quién te gusta jugar en el recreo?",
-        "¿Con quién no te gusta jugar en el recreo?",
-        "¿Con quién te gusta trabajar en clase?",
-        "¿Con quién no te gusta trabajar en clase?"
-      ],
-      gl: [
-        "Con quen che gusta xogar no recreo?",
-        "Con quen non che gusta xogar no recreo?",
-        "Con quen che gusta traballar na clase?",
-        "Con quen non che gusta traballar na clase?"
-      ]
-    }[lang];
+    const grupoClave = sessionStorage.getItem("grupoSeleccionado");
+    const alumno = sessionStorage.getItem("alumnoSeleccionado");
 
-    const curso = localStorage.getItem("alumno_curso");
-    const fecha = localStorage.getItem("alumno_fecha");
-    const alumno = localStorage.getItem("alumno_nombre");
-    const grupoKey = `grupo_${curso}_${fecha}`;
-    const nombres = JSON.parse(localStorage.getItem(grupoKey)) || [];
+    const bienvenida = document.getElementById("bienvenida");
+    const eleccion1 = document.getElementById("eleccion1");
+    const eleccion2 = document.getElementById("eleccion2");
 
-    let paso = 0;
-    const respuestas = [];
+    if (!grupoClave || !alumno) {
+      alert("Datos no válidos. Vuelve a la pantalla anterior.");
+      window.location.href = "acceso_alumno.html";
+    } else {
+      bienvenida.innerHTML = `<p><strong>Hola ${alumno}!</strong> Gracias por participar en el sociograma. A continuación responde con sinceridad.</p>`;
 
-    const preguntaEl = document.getElementById("pregunta");
-    const lista = document.getElementById("lista-nombres");
-    const seleccion = document.getElementById("seleccion");
-    const informe = document.getElementById("informe");
+      const grupo = JSON.parse(localStorage.getItem(grupoClave));
+      const compañeros = grupo.alumnos.filter(nombre => nombre !== alumno);
 
-    function mezclarArray(array) {
-      for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-      }
-      return array;
-    }
+      compañeros.forEach(nombre => {
+        const option1 = document.createElement("option");
+        option1.value = nombre;
+        option1.textContent = nombre;
 
-    function cargarPregunta() {
-      preguntaEl.textContent = preguntas[paso];
-      lista.innerHTML = "";
-      seleccion.innerHTML = lang === "gl"
-        ? "Arrastra aquí as túas eleccións (máx. 3)"
-        : "Arrastra aquí tus elecciones (máx. 3)";
+        const option2 = option1.cloneNode(true);
 
-      const opciones = mezclarArray([...nombres.filter(n => n !== alumno)]);
-      opciones.forEach(nombre => {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.setAttribute("draggable", true);
-        card.ondragstart = e => e.dataTransfer.setData("text", nombre);
-        card.innerHTML = `<div class="icon">👤</div><div>${nombre}</div>`;
-        lista.appendChild(card);
+        eleccion1.appendChild(option1);
+        eleccion2.appendChild(option2);
       });
     }
 
-    seleccion.ondragover = e => e.preventDefault();
-    seleccion.ondrop = e => {
+    document.getElementById("form-sociograma").addEventListener("submit", function(e) {
       e.preventDefault();
-      const nombre = e.dataTransfer.getData("text");
-      const yaEsta = [...seleccion.querySelectorAll(".card")].some(c => c.innerText.includes(nombre));
-      if (!yaEsta && seleccion.querySelectorAll(".card").length < 3) {
-        const card = document.createElement("div");
-        card.className = "card";
-        card.innerHTML = `<div class="icon">👤</div><div>${nombre}</div>`;
-        seleccion.appendChild(card);
-      }
-    };
 
-    function siguiente() {
-      const elegidos = [...seleccion.querySelectorAll(".card")].map(c => c.innerText.trim());
-      respuestas.push({ pregunta: preguntas[paso], seleccionados: elegidos });
-      paso++;
-      if (paso < preguntas.length) {
-        cargarPregunta();
-      } else {
-        mostrarInforme();
-      }
-    }
-
-    function mostrarInforme() {
-      document.querySelector("h2").style.display = "none";
-      lista.style.display = "none";
-      seleccion.style.display = "none";
-      document.querySelector("button").style.display = "none";
-
-      const resumen = {
-        alumno: alumno,
-        curso: curso,
-        fecha: fecha,
-        respuestas: respuestas
+      const respuesta = {
+        alumno,
+        eleccion1: eleccion1.value,
+        eleccion2: eleccion2.value,
+        fecha: new Date().toISOString()
       };
 
-      const clave = `respuesta_${alumno}_${curso}_${fecha}`;
-      localStorage.setItem(clave, JSON.stringify(resumen));
+      // Guardar respuestas (aquí se puede guardar en localStorage o enviar a servidor)
+      const claveRespuestas = `${grupoClave} - respuestas`;
+      let respuestas = JSON.parse(localStorage.getItem(claveRespuestas)) || [];
+      respuestas.push(respuesta);
+      localStorage.setItem(claveRespuestas, JSON.stringify(respuestas));
 
-      informe.innerHTML = `
-        <h2>${lang === "gl" ? "Grazas pola túa participación!" : "¡Gracias por tu participación!"}</h2>
-        <div style="font-size: 4em; margin-bottom: 0.5em;">🎉</div>
-        <p>${lang === "gl" ? "As túas respostas foron gardadas." : "Tus respuestas han sido guardadas."}</p>
-        <button onclick="window.location.href='index.html'" style="margin-top: 1.5em;">
-          ${lang === "gl" ? "Volver ao inicio" : "Volver al inicio"}
-        </button>
-      `;
-      informe.style.display = "block";
-    }
-
-    cargarPregunta();
+      // Redirigir a pantalla de agradecimiento
+      window.location.href = "agradecimiento.html";
+    });
   </script>
 </body>
 </html>
+
 
 
 
