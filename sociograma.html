@@ -1,223 +1,67 @@
-<!DOCTYPE html>
-<html lang="es">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sociograma</title>
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    body {
-      font-family: 'Arial Rounded MT Bold', sans-serif;
-      background-color: #f0f8ff;
-      margin: 0;
-      padding: 0;
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const alumno = params.get("nombre") || "Alumno/a";
+  document.getElementById("nombreAlumno").textContent = alumno;
+
+  const nombres = ["Mateo", "Sofía", "Diego", "Iria", "Leo", "Naiara", "Lucas", "Sara"];
+  const listaAlumnos = document.getElementById("listaAlumnos");
+
+  nombres.forEach((nombre, index) => {
+    const div = document.createElement("div");
+    div.className = "student";
+    div.draggable = true;
+    div.id = "alumno-" + index;
+    div.ondragstart = drag;
+
+    const img = document.createElement("img");
+    img.src = "img/silueta" + ((index % 4) + 1) + ".png";
+
+    const p = document.createElement("p");
+    p.textContent = nombre;
+
+    div.appendChild(img);
+    div.appendChild(p);
+    listaAlumnos.appendChild(div);
+  });
+
+  function allowDrop(ev) {
+    ev.preventDefault();
+  }
+
+  function drag(ev) {
+    ev.dataTransfer.setData("text", ev.target.id);
+  }
+
+  function drop(ev) {
+    ev.preventDefault();
+    const data = ev.dataTransfer.getData("text");
+    const dropped = document.getElementById(data);
+
+    // Si el contenedor ya tiene un niño, lo mueve de vuelta
+    if (ev.target.classList.contains("drop-box") && ev.target.children.length > 1) {
+      ev.target.removeChild(ev.target.lastChild);
     }
 
-    .container {
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 30px;
-      text-align: center;
+    if (ev.target.classList.contains("drop-box") || ev.target.classList.contains("students")) {
+      ev.target.appendChild(dropped);
+    } else if (ev.target.parentElement.classList.contains("drop-box") || ev.target.parentElement.classList.contains("students")) {
+      ev.target.parentElement.appendChild(dropped);
     }
+  }
 
-    h1 {
-      color: #333;
-      font-size: 2.5rem;
-    }
+  function comenzarTest() {
+    document.getElementById("pantallaBienvenida").classList.add("hidden");
+    document.getElementById("pantallaTest").classList.remove("hidden");
+  }
 
-    .instructions {
-      font-size: 1.2rem;
-      margin: 20px auto;
-      background-color: #e6f0ff;
-      border-left: 5px solid #4a90e2;
-      padding: 15px;
-      border-radius: 8px;
-      text-align: left;
-    }
+  function siguientePregunta() {
+    // Lógica para avanzar
+  }
 
-    .question {
-      font-size: 1.5rem;
-      margin-top: 30px;
-    }
-
-    .students {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 20px;
-      margin-top: 30px;
-    }
-
-    .student {
-      width: 120px;
-      height: 160px;
-      background-color: #fff;
-      border: 2px dashed #ccc;
-      border-radius: 10px;
-      padding: 10px;
-      cursor: grab;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-    }
-
-    .student img {
-      width: 60px;
-      height: 60px;
-      margin-bottom: 10px;
-    }
-
-    .student p {
-      margin: 0;
-      font-size: 1rem;
-      color: #444;
-    }
-
-    .drop-zone {
-      display: flex;
-      justify-content: space-around;
-      align-items: center;
-      margin-top: 40px;
-    }
-
-    .drop-box {
-      width: 120px;
-      height: 150px;
-      background-color: #f9f9f9;
-      border: 3px solid #4a90e2;
-      border-radius: 10px;
-      padding: 10px;
-      text-align: center;
-    }
-
-    .drop-box p {
-      font-size: 1rem;
-      margin-bottom: 10px;
-      font-weight: bold;
-    }
-
-    .nav-buttons {
-      margin-top: 40px;
-    }
-
-    .nav-buttons button {
-      padding: 12px 30px;
-      font-size: 1.1rem;
-      border: none;
-      border-radius: 8px;
-      background-color: #4a90e2;
-      color: white;
-      cursor: pointer;
-      margin: 0 10px;
-      transition: background 0.3s;
-    }
-
-    .nav-buttons button:hover {
-      background-color: #357ABD;
-    }
-  </style>
-</head>
-<body>
-  <div class="container">
-    <h1>Benvido, <span id="nombreAlumno">[Nome]</span></h1>
-    <div class="instructions">
-      <p>Por favor, responde con sinceridade.</p>
-      <p>Poderás escoller de 0 a 5 compañeiros para cada pregunta.</p>
-      <p>Arrastra as siluetas aos cadros numerados segundo a túa preferencia.</p>
-      <p>Podes cambiar de opinión antes de continuar.</p>
-    </div>
-
-    <div class="question" id="preguntaActual">
-      Con quen che gusta xogar no recreo?
-    </div>
-
-    <div class="students" id="listaAlumnos">
-      <!-- Aquí se insertan dinámicamente los alumnos -->
-      <!-- Ejemplo: -->
-      <!-- <div class="student" draggable="true"><img src="img/silueta1.png"><p>Lucas</p></div> -->
-    </div>
-
-    <div class="drop-zone">
-      <div class="drop-box" ondrop="drop(event)" ondragover="allowDrop(event)">
-        <p>1º</p>
-      </div>
-      <div class="drop-box" ondrop="drop(event)" ondragover="allowDrop(event)">
-        <p>2º</p>
-      </div>
-      <div class="drop-box" ondrop="drop(event)" ondragover="allowDrop(event)">
-        <p>3º</p>
-      </div>
-      <div class="drop-box" ondrop="drop(event)" ondragover="allowDrop(event)">
-        <p>4º</p>
-      </div>
-      <div class="drop-box" ondrop="drop(event)" ondragover="allowDrop(event)">
-        <p>5º</p>
-      </div>
-    </div>
-
-    <div class="nav-buttons">
-      <button onclick="anteriorPregunta()">Anterior</button>
-      <button onclick="siguientePregunta()">Seguinte</button>
-    </div>
-  </div>
-
-  <script>
-    const alumno = "Lucía"; // Reemplazar por nombre desde el sistema
-    const nombres = ["Mateo", "Sofía", "Diego", "Iria", "Leo", "Naiara", "Lucas", "Sara"];
-
-    document.getElementById("nombreAlumno").textContent = alumno;
-
-    const listaAlumnos = document.getElementById("listaAlumnos");
-
-    nombres.forEach((nombre, index) => {
-      const div = document.createElement("div");
-      div.className = "student";
-      div.draggable = true;
-      div.id = "alumno-" + index;
-      div.ondragstart = drag;
-
-      const img = document.createElement("img");
-      img.src = "img/silueta" + ((index % 4) + 1) + ".png"; // 4 siluetas distintas
-
-      const p = document.createElement("p");
-      p.textContent = nombre;
-
-      div.appendChild(img);
-      div.appendChild(p);
-      listaAlumnos.appendChild(div);
-    });
-
-    function allowDrop(ev) {
-      ev.preventDefault();
-    }
-
-    function drag(ev) {
-      ev.dataTransfer.setData("text", ev.target.id);
-    }
-
-    function drop(ev) {
-      ev.preventDefault();
-      const data = ev.dataTransfer.getData("text");
-      const dropped = document.getElementById(data);
-      if (ev.target.classList.contains("drop-box")) {
-        ev.target.appendChild(dropped);
-      } else if (ev.target.parentElement.classList.contains("drop-box")) {
-        ev.target.parentElement.appendChild(dropped);
-      }
-    }
-
-    function siguientePregunta() {
-      // Lógica para avanzar
-    }
-
-    function anteriorPregunta() {
-      // Lógica para retroceder
-    }
-  </script>
-</body>
-</html>
+  function anteriorPregunta() {
+    // Lógica para retroceder
+  }
+</script>
 
 
 
