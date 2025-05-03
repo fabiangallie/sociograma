@@ -3,60 +3,209 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Gracias por tu participación</title>
+  <title>Sociograma</title>
   <link rel="stylesheet" href="style.css" />
   <style>
     body {
-      margin: 0;
-      padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(to right, #e0f7fa, #e1bee7);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
-      color: #333;
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f0f8ff;
     }
-
-    .container {
-      background: white;
-      padding: 40px;
-      border-radius: 20px;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    h1, h2 {
       text-align: center;
-      max-width: 500px;
-      width: 90%;
     }
-
-    h1 {
-      font-size: 2rem;
-      margin-bottom: 20px;
-      color: #4a148c;
+    .instrucciones ul {
+      list-style-type: disc;
+      padding-left: 30px;
+      margin-top: 10px;
     }
-
-    .emoji {
-      font-size: 3rem;
-      margin-bottom: 20px;
+    .nombre-alumno {
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      text-align: center;
     }
-
-    p {
-      font-size: 1.2rem;
-    }
-
-    .button {
+    .contenedor-pregunta {
       display: none;
+    }
+    .visible {
+      display: block;
+    }
+    .drag-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+      margin: 20px 0;
+    }
+    .alumno {
+      width: 100px;
+      text-align: center;
+      padding: 10px;
+      background: #d0eaff;
+      border-radius: 8px;
+      cursor: grab;
+    }
+    .dropzone {
+      min-height: 150px;
+      border: 2px dashed #ccc;
+      padding: 10px;
+      margin-top: 10px;
+      background-color: #fff;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 10px;
+    }
+    .controls {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 20px;
+    }
+    button {
+      padding: 10px 20px;
+      font-size: 16px;
+      border: none;
+      background-color: #007acc;
+      color: white;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <div class="emoji">😄</div>
-    <h1>¡Gracias por tu participación!</h1>
-    <p>Tu test ha sido enviado correctamente.</p>
-    <p>Tu colaboración es muy importante.</p>
+
+  <h1>Sociograma</h1>
+  <div class="nombre-alumno" id="nombreAlumno"></div>
+
+  <div class="instrucciones">
+    <h2>Instrucciones</h2>
+    <ul>
+      <li>Arrastra de 0 a 5 compañeros por orden de preferencia.</li>
+      <li>Puedes cambiar el orden en cualquier momento.</li>
+      <li>Lee cada pregunta con atención.</li>
+      <li>Solo tú verás tus respuestas.</li>
+    </ul>
   </div>
+
+  <div id="preguntas-container">
+    <div class="contenedor-pregunta visible" data-index="0">
+      <h3>¿Con quién te gusta jugar en el recreo?</h3>
+      <div class="drag-container" id="drag-0"></div>
+      <div class="dropzone" id="drop-0"></div>
+    </div>
+    <div class="contenedor-pregunta" data-index="1">
+      <h3>¿Con quién no te gusta jugar en el recreo?</h3>
+      <div class="drag-container" id="drag-1"></div>
+      <div class="dropzone" id="drop-1"></div>
+    </div>
+    <div class="contenedor-pregunta" data-index="2">
+      <h3>¿Con quién te gusta trabajar en clase?</h3>
+      <div class="drag-container" id="drag-2"></div>
+      <div class="dropzone" id="drop-2"></div>
+    </div>
+    <div class="contenedor-pregunta" data-index="3">
+      <h3>¿Con quién no te gusta trabajar en clase?</h3>
+      <div class="drag-container" id="drag-3"></div>
+      <div class="dropzone" id="drop-3"></div>
+    </div>
+  </div>
+
+  <div class="controls">
+    <button id="anterior" disabled>Anterior</button>
+    <button id="siguiente">Siguiente</button>
+  </div>
+
+  <script>
+    const alumno = localStorage.getItem("alumno");
+    const curso = localStorage.getItem("curso");
+    document.getElementById("nombreAlumno").textContent = `Hola ${alumno}, este es tu test`;
+
+    const alumnosGrupo = {
+      "1A": ["Lucía", "Manuel", "Carla", "Pedro"],
+      "1B": ["Laura", "Miguel", "Sofía", "David"]
+    };
+
+    const preguntas = document.querySelectorAll(".contenedor-pregunta");
+    let paso = 0;
+
+    function mostrarPregunta(index) {
+      preguntas.forEach(p => p.classList.remove("visible"));
+      preguntas[index].classList.add("visible");
+
+      document.getElementById("anterior").disabled = index === 0;
+      document.getElementById("siguiente").textContent = index === preguntas.length - 1 ? "Finalizar" : "Siguiente";
+    }
+
+    function crearOpciones(id) {
+      const drag = document.getElementById(`drag-${id}`);
+      drag.innerHTML = "";
+      alumnosGrupo[curso].forEach(nombre => {
+        if (nombre !== alumno) {
+          const div = document.createElement("div");
+          div.className = "alumno";
+          div.draggable = true;
+          div.textContent = nombre;
+          div.addEventListener("dragstart", e => {
+            e.dataTransfer.setData("text", e.target.textContent);
+          });
+          drag.appendChild(div);
+        }
+      });
+    }
+
+    function prepararDropzones(id) {
+      const drop = document.getElementById(`drop-${id}`);
+      drop.ondragover = e => e.preventDefault();
+      drop.ondrop = e => {
+        e.preventDefault();
+        const nombre = e.dataTransfer.getData("text");
+        const yaExiste = Array.from(drop.children).some(el => el.textContent === nombre);
+        if (!yaExiste && drop.children.length < 5) {
+          const div = document.createElement("div");
+          div.className = "alumno";
+          div.textContent = nombre;
+          div.draggable = true;
+          div.addEventListener("dragstart", e => {
+            e.dataTransfer.setData("text", e.target.textContent);
+          });
+          div.addEventListener("dblclick", () => div.remove());
+          drop.appendChild(div);
+        }
+      };
+    }
+
+    preguntas.forEach((p, idx) => {
+      crearOpciones(idx);
+      prepararDropzones(idx);
+    });
+
+    document.getElementById("siguiente").addEventListener("click", () => {
+      if (paso < preguntas.length - 1) {
+        paso++;
+        mostrarPregunta(paso);
+      } else {
+        localStorage.setItem("testState", "finished");
+        window.location.href = "pantallaFinal.html";
+      }
+    });
+
+    document.getElementById("anterior").addEventListener("click", () => {
+      if (paso > 0) {
+        paso--;
+        mostrarPregunta(paso);
+      }
+    });
+
+    mostrarPregunta(paso);
+  </script>
 </body>
 </html>
+
 
 
 
