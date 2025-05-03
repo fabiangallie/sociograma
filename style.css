@@ -1,48 +1,96 @@
-body {
-  font-family: 'Arial', sans-serif;
+/* Reset básico */
+* {
   margin: 0;
   padding: 0;
-  background-color: #f3f9ff;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Fondo general */
+body {
+  background: linear-gradient(to bottom right, #e0f7fa, #ffffff);
+  color: #333;
+  min-height: 100vh;
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  height: 100vh;
+  justify-content: flex-start;
+  padding: 20px;
 }
 
-.container {
+/* Imagen principal */
+.imagen-index {
+  max-width: 300px;
+  width: 100%;
+  height: auto;
+  display: block;
+  margin: 20px auto;
+}
+
+/* Recuadro del título principal */
+.titulo-recuadro {
+  background-color: #d0eaff; /* azul suave */
+  padding: 20px 30px;
+  border-radius: 20px;
   text-align: center;
-  background: white;
-  padding: 40px;
-  border-radius: 12px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-.titulo {
-  font-size: 32px;
-  color: #2a5dba;
-  margin-bottom: 10px;
+.titulo-recuadro h1 {
+  font-size: 2.5em;
+  color: #0077b6; /* azul más fuerte */
 }
 
-.subtitulo {
-  font-size: 18px;
-  color: #555;
-  margin-bottom: 30px;
+/* Subtítulo */
+h2 {
+  font-size: 1.8em;
+  color: #444;
+  margin-bottom: 20px;
 }
 
-.botones-usuario button {
-  font-size: 18px;
-  padding: 12px 24px;
-  margin: 0 10px;
-  background-color: #2a5dba;
+/* Botones */
+.boton {
+  background-color: #00b4d8;
   color: white;
+  padding: 15px 25px;
+  font-size: 1.1em;
   border: none;
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
+  margin: 10px;
+  box-shadow: 0 5px 10px rgba(0,0,0,0.15);
+  transition: background-color 0.3s, transform 0.2s;
 }
 
-.botones-usuario button:hover {
-  background-color: #1d428a;
+.boton:hover {
+  background-color: #0096c7;
+  transform: translateY(-2px);
 }
+
+/* Contenedor centrado para secciones */
+.contenedor {
+  max-width: 600px;
+  width: 100%;
+  text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+  .titulo-recuadro h1 {
+    font-size: 2em;
+  }
+
+  h2 {
+    font-size: 1.5em;
+  }
+
+  .boton {
+    width: 100%;
+    font-size: 1em;
+  }
+}
+
 
 
 
