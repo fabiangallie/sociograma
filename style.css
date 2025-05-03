@@ -1,24 +1,24 @@
-/* Estilo base */
 body {
   margin: 0;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   background: linear-gradient(to right, #f7f7f7, #e0e0f0);
   display: flex;
   justify-content: center;
-  align-items: center;
-  height: 100vh;
-  padding: 1rem;
+  align-items: start;
+  min-height: 100vh;
+  padding: 2rem 1rem;
   box-sizing: border-box;
 }
 
 .container {
   text-align: center;
-  padding: 2rem;
   max-width: 600px;
   width: 100%;
   background-color: white;
   border-radius: 16px;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+  padding: 2rem;
+  margin: auto;
 }
 
 .logo {
@@ -70,7 +70,6 @@ body {
   background-color: #2980b9;
 }
 
-/* Responsivo para móviles */
 @media (max-width: 480px) {
   .title-escola {
     font-size: 2rem;
@@ -90,24 +89,3 @@ body {
     max-width: 120px;
   }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
