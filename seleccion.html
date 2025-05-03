@@ -3,34 +3,23 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Seleccionar perfil</title>
-  <link rel="stylesheet" href="style.css" />
+  <title>Panel de Selección</title>
+  <link rel="stylesheet" href="style.css"/>
 </head>
 <body>
   <div class="container">
-    <h2 id="titulo">¿Quién eres?</h2>
-    <button onclick="window.location.href='panel_profesor.html'" id="profBtn">Entrar como docente</button>
-    <button onclick="window.location.href='acceso_alumno.html'" id="alumnoBtn">Entrar como alumno/a</button>
+    <img src="corazon.png" alt="Corazón multicolor" class="logo"/>
+
+    <div class="title-box">
+      <h1 class="main-title">Escola Diversa</h1>
+      <h2 class="subtitle">Elige tu acceso</h2>
+    </div>
+
+    <div class="button-container">
+      <button onclick="window.location.href='panel-alumno.html'">Alumnado</button>
+      <button onclick="window.location.href='panel-profesor.html'">Profesorado</button>
+    </div>
   </div>
-
-  <script>
-    const lang = localStorage.getItem('lang') || 'es';
-    const textos = {
-      gl: {
-        titulo: "Quen es ti?",
-        prof: "Entrar como docente",
-        alumno: "Entrar como alumno/a"
-      },
-      es: {
-        titulo: "¿Quién eres?",
-        prof: "Entrar como docente",
-        alumno: "Entrar como alumno/a"
-      }
-    };
-
-    document.getElementById("titulo").textContent = textos[lang].titulo;
-    document.getElementById("profBtn").textContent = textos[lang].prof;
-    document.getElementById("alumnoBtn").textContent = textos[lang].alumno;
-  </script>
 </body>
 </html>
+
