@@ -3,87 +3,150 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Test Sociométrico</title>
+  <title>Sociograma - Escola Diversa</title>
   <link rel="stylesheet" href="style.css" />
+  <style>
+    .container {
+      max-width: 960px;
+      margin: auto;
+      padding: 2rem;
+      text-align: center;
+    }
+    .welcome {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+    }
+    .drag-zone {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    .student {
+      width: 100px;
+      height: 100px;
+      background-color: #e0e0e0;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: grab;
+      font-weight: bold;
+      box-shadow: 2px 2px 5px rgba(0,0,0,0.2);
+    }
+    .drop-zone {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 2rem;
+    }
+    .drop-slot {
+      width: 120px;
+      height: 120px;
+      border: 2px dashed #aaa;
+      border-radius: 8px;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: #f5faff;
+    }
+    .drop-slot::before {
+      content: attr(data-label);
+      position: absolute;
+      top: -1.2rem;
+      font-weight: bold;
+      background-color: #e0f0ff;
+      padding: 2px 6px;
+      border-radius: 6px;
+      font-size: 0.9rem;
+    }
+    .btn {
+      margin-top: 2rem;
+      padding: 10px 20px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
   <div class="container">
-    <div class="title-box azul">
-      <h1 class="title-grande">Sociograma</h1>
+    <div class="welcome">
+      ¡Hola <span id="nombreAlumno">[Nombre]</span>! Elige hasta 5 compañeros con los que más te guste estar.
     </div>
 
-    <div id="bienvenida" class="form">
-      <!-- Saludo personalizado al alumno -->
+    <div class="drag-zone" id="alumnosDisponibles">
+      <!-- Estos nombres se deben cargar dinámicamente desde el grupo -->
+      <div class="student" draggable="true">Alex</div>
+      <div class="student" draggable="true">Sofía</div>
+      <div class="student" draggable="true">Martín</div>
+      <div class="student" draggable="true">Lucía</div>
+      <div class="student" draggable="true">Mateo</div>
+      <div class="student" draggable="true">Valeria</div>
     </div>
 
-    <form id="form-sociograma" class="form">
-      <p>Selecciona a tus compañeros según se indica:</p>
+    <div class="drop-zone" id="zonaDestino">
+      <div class="drop-slot" data-label="1º"></div>
+      <div class="drop-slot" data-label="2º"></div>
+      <div class="drop-slot" data-label="3º"></div>
+      <div class="drop-slot" data-label="4º"></div>
+      <div class="drop-slot" data-label="5º"></div>
+    </div>
 
-      <label for="eleccion1">¿Con quién te gustaría trabajar en clase?</label>
-      <select id="eleccion1" required>
-        <option value="">-- Elegir compañero/a --</option>
-      </select>
-
-      <label for="eleccion2">¿Con quién te gustaría jugar en el recreo?</label>
-      <select id="eleccion2" required>
-        <option value="">-- Elegir compañero/a --</option>
-      </select>
-
-      <button type="submit" class="btn">Enviar respuestas</button>
-    </form>
+    <button class="btn" onclick="enviarRespuestas()">Enviar</button>
   </div>
 
   <script>
-    const grupoClave = sessionStorage.getItem("grupoSeleccionado");
-    const alumno = sessionStorage.getItem("alumnoSeleccionado");
+    const nombreAlumno = sessionStorage.getItem('nombreAlumno') || "Alumno";
+    document.getElementById("nombreAlumno").textContent = nombreAlumno;
 
-    const bienvenida = document.getElementById("bienvenida");
-    const eleccion1 = document.getElementById("eleccion1");
-    const eleccion2 = document.getElementById("eleccion2");
+    const students = document.querySelectorAll('.student');
+    const dropSlots = document.querySelectorAll('.drop-slot');
 
-    if (!grupoClave || !alumno) {
-      alert("Datos no válidos. Vuelve a la pantalla anterior.");
-      window.location.href = "acceso_alumno.html";
-    } else {
-      bienvenida.innerHTML = `<p><strong>Hola ${alumno}!</strong> Gracias por participar en el sociograma. A continuación responde con sinceridad.</p>`;
-
-      const grupo = JSON.parse(localStorage.getItem(grupoClave));
-      const compañeros = grupo.alumnos.filter(nombre => nombre !== alumno);
-
-      compañeros.forEach(nombre => {
-        const option1 = document.createElement("option");
-        option1.value = nombre;
-        option1.textContent = nombre;
-
-        const option2 = option1.cloneNode(true);
-
-        eleccion1.appendChild(option1);
-        eleccion2.appendChild(option2);
+    students.forEach(student => {
+      student.addEventListener('dragstart', e => {
+        e.dataTransfer.setData('text/plain', student.textContent);
+        e.dataTransfer.setData('text/id', student.id);
       });
-    }
-
-    document.getElementById("form-sociograma").addEventListener("submit", function(e) {
-      e.preventDefault();
-
-      const respuesta = {
-        alumno,
-        eleccion1: eleccion1.value,
-        eleccion2: eleccion2.value,
-        fecha: new Date().toISOString()
-      };
-
-      // Guardar respuestas (aquí se puede guardar en localStorage o enviar a servidor)
-      const claveRespuestas = `${grupoClave} - respuestas`;
-      let respuestas = JSON.parse(localStorage.getItem(claveRespuestas)) || [];
-      respuestas.push(respuesta);
-      localStorage.setItem(claveRespuestas, JSON.stringify(respuestas));
-
-      // Redirigir a pantalla de agradecimiento
-      window.location.href = "agradecimiento.html";
     });
+
+    dropSlots.forEach(slot => {
+      slot.addEventListener('dragover', e => {
+        e.preventDefault();
+      });
+      slot.addEventListener('drop', e => {
+        e.preventDefault();
+        const text = e.dataTransfer.getData('text/plain');
+        if (slot.textContent.trim() === "") {
+          const clone = document.createElement('div');
+          clone.className = 'student';
+          clone.textContent = text;
+          clone.setAttribute('draggable', 'false');
+          slot.appendChild(clone);
+        }
+      });
+    });
+
+    function enviarRespuestas() {
+      const elecciones = [];
+      dropSlots.forEach(slot => {
+        const texto = slot.textContent.trim();
+        elecciones.push(texto || null);
+      });
+
+      console.log("Respuestas de " + nombreAlumno + ":", elecciones);
+      alert("¡Gracias por tu participación!");
+      // Aquí se enviaría la información al servidor
+      window.location.href = "agradecimiento.html";
+    }
   </script>
 </body>
 </html>
+
 
 
 
