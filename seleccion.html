@@ -2,68 +2,73 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Seleccionar Alumno</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <h1>Selecciona tu curso y nombre</h1>
-    <form id="formSeleccion">
-      <label for="curso">Curso:</label>
-      <select id="curso" required>
-        <option value="" disabled selected>Selecciona un curso</option>
+    <h1 class="titulo">Selecciona tu curso y tu nombre</h1>
+
+    <div>
+      <label for="curso">Curso:</label><br/>
+      <select id="curso" onchange="cargarAlumnos()">
+        <option value="">-- Selecciona un curso --</option>
         <option value="1A">1ºA</option>
         <option value="1B">1ºB</option>
+        <option value="2A">2ºA</option>
+        <!-- Añade más cursos si es necesario -->
       </select>
+    </div>
 
-      <label for="alumno">Nombre:</label>
-      <select id="alumno" required>
-        <option value="" disabled selected>Selecciona un alumno</option>
-        <!-- Este select se rellenará dinámicamente según el curso -->
+    <div style="margin-top: 20px;">
+      <label for="alumno">Nombre:</label><br/>
+      <select id="alumno">
+        <option value="">-- Selecciona tu nombre --</option>
+        <!-- Se rellenará según el curso -->
       </select>
+    </div>
 
-      <button type="submit" class="boton">Entrar</button>
-    </form>
+    <button style="margin-top: 30px;" onclick="irAlSociograma()">Siguiente</button>
   </div>
 
   <script>
-    const cursoSelect = document.getElementById("curso");
-    const alumnoSelect = document.getElementById("alumno");
-
     const alumnosPorCurso = {
-      "1A": ["Lucía", "Manuel", "Carla", "Pedro"],
-      "1B": ["Laura", "Miguel", "Sofía", "David"]
+      '1A': ['Lucía', 'Manuel', 'Iria', 'Xoel'],
+      '1B': ['Carlos', 'Sara', 'Andrés', 'Noa'],
+      '2A': ['Laura', 'Hugo', 'Martina', 'Diego']
     };
 
-    cursoSelect.addEventListener("change", () => {
-      const curso = cursoSelect.value;
-      alumnoSelect.innerHTML = '<option value="" disabled selected>Selecciona un alumno</option>';
-      alumnosPorCurso[curso].forEach(nombre => {
-        const option = document.createElement("option");
-        option.value = nombre;
-        option.textContent = nombre;
-        alumnoSelect.appendChild(option);
-      });
-    });
+    function cargarAlumnos() {
+      const curso = document.getElementById('curso').value;
+      const alumnoSelect = document.getElementById('alumno');
+      alumnoSelect.innerHTML = '<option value="">-- Selecciona tu nombre --</option>';
 
-    document.getElementById("formSeleccion").addEventListener("submit", e => {
-      e.preventDefault();
-      const curso = cursoSelect.value;
-      const alumno = alumnoSelect.value;
-      if (curso && alumno) {
-        localStorage.setItem("curso", curso);
-        localStorage.setItem("alumno", alumno);
-        localStorage.setItem("testState", "in_progress");
-        window.location.href = "sociograma.html";
+      if (alumnosPorCurso[curso]) {
+        alumnosPorCurso[curso].forEach(nombre => {
+          const opt = document.createElement('option');
+          opt.value = nombre;
+          opt.textContent = nombre;
+          alumnoSelect.appendChild(opt);
+        });
       }
-    });
+    }
 
-    // Limpiar test anterior si vuelve a esta página
-    window.onload = () => {
-      localStorage.removeItem("testState");
-    };
+    function irAlSociograma() {
+      const curso = document.getElementById('curso').value;
+      const nombre = document.getElementById('alumno').value;
+
+      if (!curso || !nombre) {
+        alert('Por favor, selecciona curso y nombre.');
+        return;
+      }
+
+      localStorage.setItem('curso', curso);
+      localStorage.setItem('nombreAlumno', nombre);
+      window.location.href = "sociograma.html";
+    }
   </script>
 </body>
 </html>
+
 
