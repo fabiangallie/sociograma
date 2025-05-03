@@ -3,31 +3,72 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Alumnado</title>
+  <title>Acceso Alumno</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
     <div class="title-box azul">
-      <h1 class="title-grande">Alumnado</h1>
-      
+      <h1 class="title-grande">Acceso Alumno</h1>
     </div>
 
-    <form class="form">
-      <label for="curso">Curso:</label>
-      <select id="curso" name="curso">
-        <!-- Cursos disponibles se cargarán dinámicamente -->
+    <form class="form" id="form-acceso">
+      <label for="grupo">Selecciona tu grupo:</label>
+      <select id="grupo" required onchange="cargarAlumnos()">
+        <option value="">-- Elegir grupo --</option>
       </select>
 
-      <label for="nombre">Nombre:</label>
-      <select id="nombre" name="nombre">
-        <!-- Nombres se cargarán según el curso -->
+      <label for="alumno">Selecciona tu nombre:</label>
+      <select id="alumno" required>
+        <option value="">-- Elegir nombre --</option>
       </select>
 
-      <button type="submit" class="btn">Comenzar Sociograma</button>
+      <button type="submit" class="btn">Entrar</button>
     </form>
-
-    <script src="js/alumno-acceso.js"></script>
   </div>
+
+  <script>
+    // Cargar grupos guardados al iniciar
+    const selectGrupo = document.getElementById("grupo");
+    for (let i = 0; i < localStorage.length; i++) {
+      const clave = localStorage.key(i);
+      if (clave.includes(" - ")) {
+        const option = document.createElement("option");
+        option.value = clave;
+        option.textContent = clave;
+        selectGrupo.appendChild(option);
+      }
+    }
+
+    function cargarAlumnos() {
+      const clave = selectGrupo.value;
+      const selectAlumno = document.getElementById("alumno");
+      selectAlumno.innerHTML = `<option value="">-- Elegir nombre --</option>`;
+
+      if (!clave) return;
+
+      const grupo = JSON.parse(localStorage.getItem(clave));
+      grupo.alumnos.forEach(nombre => {
+        const option = document.createElement("option");
+        option.value = nombre;
+        option.textContent = nombre;
+        selectAlumno.appendChild(option);
+      });
+    }
+
+    document.getElementById("form-acceso").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const grupo = selectGrupo.value;
+      const alumno = document.getElementById("alumno").value;
+      if (!grupo || !alumno) return alert("Debes seleccionar grupo y nombre.");
+
+      // Guardamos en sessionStorage para usar en el test
+      sessionStorage.setItem("grupoSeleccionado", grupo);
+      sessionStorage.setItem("alumnoSeleccionado", alumno);
+
+      // Redirigir al test
+      window.location.href = "test.html"; // Cambia a la página real del test
+    });
+  </script>
 </body>
 </html>
