@@ -1,91 +1,60 @@
 body {
   margin: 0;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(to right, #f7f7f7, #e0e0f0);
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to bottom right, #f0f4f8, #ffffff);
   display: flex;
   justify-content: center;
-  align-items: start;
+  align-items: center;
   min-height: 100vh;
-  padding: 2rem 1rem;
-  box-sizing: border-box;
 }
 
 .container {
   text-align: center;
-  max-width: 600px;
-  width: 100%;
-  background-color: white;
-  border-radius: 16px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
   padding: 2rem;
-  margin: auto;
+  background-color: #fff;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+  border-radius: 16px;
+  max-width: 500px;
+  width: 90%;
 }
 
 .logo {
-  max-width: 180px;
-  width: 100%;
-  margin-bottom: 1.5rem;
+  width: 120px;
+  margin-bottom: 1rem;
 }
 
 .title-box {
-  background-color: #ffd166;
+  background-color: #ffe0f0;
   padding: 1rem;
   border-radius: 12px;
-  display: inline-block;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
 }
 
-.title-escola {
-  font-size: 2.5rem;
-  color: #333;
+.main-title {
+  font-size: 2rem;
+  color: #d81b60;
   margin: 0;
 }
 
 .subtitle {
-  font-size: 2rem;
+  font-size: 1.5rem;
   color: #555;
-  margin-top: 0;
+  margin: 0.5rem 0 0 0;
 }
 
-.language-buttons {
-  margin-top: 2rem;
-  display: flex;
-  justify-content: center;
-  flex-wrap: wrap;
-  gap: 1rem;
-}
-
-.btn {
-  text-decoration: none;
-  padding: 0.8rem 2rem;
-  font-size: 1.2rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  transition: background 0.3s ease;
-  background-color: #3498db;
+.button-container button {
+  background-color: #2196f3;
   color: white;
+  border: none;
+  padding: 1rem 2rem;
+  margin: 0.5rem;
+  border-radius: 10px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.btn:hover {
-  background-color: #2980b9;
-}
-
-@media (max-width: 480px) {
-  .title-escola {
-    font-size: 2rem;
-  }
-
-  .subtitle {
-    font-size: 1.5rem;
-  }
-
-  .btn {
-    width: 100%;
-    padding: 1rem;
-    font-size: 1rem;
-  }
-
-  .logo {
-    max-width: 120px;
-  }
+.button-container button:hover {
+  background-color: #1976d2;
 }
