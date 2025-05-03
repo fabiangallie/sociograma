@@ -3,44 +3,20 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Acceso docente</title>
+  <title>Panel Profesorado</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <h2 id="titulo">Acceso para el profesorado</h2>
-    <input type="password" id="clave" placeholder="••••••••" />
-    <br>
-    <button onclick="validar()" id="btn">Entrar</button>
-    <p id="mensaje" style="color: red;"></p>
+    <div class="title-box azul">
+      <h1 class="title-grande">Panel Profesorado</h1>
+      <p>Selecciona una opción para continuar</p>
+    </div>
+
+    <div class="button-group">
+      <a href="crear-grupo.html" class="btn">Crear/Editar grupos</a>
+      <a href="ver-informes.html" class="btn">Ver informes y resultados</a>
+    </div>
   </div>
-
-  <script>
-    const lang = localStorage.getItem("lang") || "es";
-    const textos = {
-      gl: {
-        titulo: "Acceso para o profesorado",
-        boton: "Entrar",
-        error: "Contrasinal incorrecto"
-      },
-      es: {
-        titulo: "Acceso para el profesorado",
-        boton: "Entrar",
-        error: "Contraseña incorrecta"
-      }
-    };
-
-    document.getElementById("titulo").textContent = textos[lang].titulo;
-    document.getElementById("btn").textContent = textos[lang].boton;
-
-    function validar() {
-      const clave = document.getElementById("clave").value.trim();
-      if (clave === "atopa2024") {
-        window.location.href = "panel_profesor.html";
-      } else {
-        document.getElementById("mensaje").textContent = textos[lang].error;
-      }
-    }
-  </script>
 </body>
 </html>
