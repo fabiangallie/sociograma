@@ -1,25 +1,25 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="gl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Sociograma Escola Diversa</title>
-  <link rel="stylesheet" href="style.css"/>
-  <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <title>Escola Diversa</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" type="image/png" href="favicon.png" />
 </head>
 <body>
   <div class="container">
-    <img src="corazon.png" alt="Corazón multicolor" class="logo"/>
+    <img src="corazon.png" alt="Corazón multicolor" class="logo" />
+    
+    <div class="highlight-box">Escola Diversa</div>
+    <h2>Sociograma</h2>
 
-    <div class="title-box">
-      <h1 class="main-title">Escola Diversa</h1>
-      <h2 class="subtitle">Sociograma</h2>
-    </div>
-
-    <div class="button-container">
-      <button onclick="window.location.href='panel-seleccion.html'">Castellano</button>
-      <button onclick="window.location.href='panel-seleccion-gl.html'">Galego</button>
-    </div>
+    <h3>Escolle o idioma / Elige el idioma</h3>
+    <form action="selector.html" method="get">
+      <button type="submit" name="lang" value="gl">Galego</button>
+      <button type="submit" name="lang" value="es">Castellano</button>
+    </form>
   </div>
 </body>
 </html>
+
