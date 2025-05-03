@@ -2,73 +2,35 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Acceso Alumno</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Acceso Alumnado</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
-    <div class="title-box azul">
-      <h1 class="title-grande">Acceso Alumno</h1>
-    </div>
+    <h1 class="titulo-destacado">Acceso para Alumnado</h1>
 
-    <form class="form" id="form-acceso">
-      <label for="grupo">Selecciona tu grupo:</label>
-      <select id="grupo" required onchange="cargarAlumnos()">
-        <option value="">-- Elegir grupo --</option>
+    <form action="sociograma.html" method="get" class="formulario">
+      <label for="curso">Selecciona tu curso:</label>
+      <select name="curso" id="curso" required>
+        <option value="">-- Elige una opción --</option>
+        <option value="1A">1º A</option>
+        <option value="1B">1º B</option>
+        <option value="2A">2º A</option>
       </select>
 
-      <label for="alumno">Selecciona tu nombre:</label>
-      <select id="alumno" required>
-        <option value="">-- Elegir nombre --</option>
+      <label for="nombre">Selecciona tu nombre:</label>
+      <select name="nombre" id="nombre" required>
+        <option value="">-- Elige una opción --</option>
+        <!-- Este contenido se puede cargar dinámicamente según el curso -->
+        <option value="lucia">Lucía</option>
+        <option value="manuel">Manuel</option>
+        <option value="carla">Carla</option>
       </select>
 
-      <button type="submit" class="btn">Entrar</button>
+      <button type="submit" class="btn-moderno">Siguiente</button>
     </form>
   </div>
-
-  <script>
-    // Cargar grupos guardados al iniciar
-    const selectGrupo = document.getElementById("grupo");
-    for (let i = 0; i < localStorage.length; i++) {
-      const clave = localStorage.key(i);
-      if (clave.includes(" - ")) {
-        const option = document.createElement("option");
-        option.value = clave;
-        option.textContent = clave;
-        selectGrupo.appendChild(option);
-      }
-    }
-
-    function cargarAlumnos() {
-      const clave = selectGrupo.value;
-      const selectAlumno = document.getElementById("alumno");
-      selectAlumno.innerHTML = `<option value="">-- Elegir nombre --</option>`;
-
-      if (!clave) return;
-
-      const grupo = JSON.parse(localStorage.getItem(clave));
-      grupo.alumnos.forEach(nombre => {
-        const option = document.createElement("option");
-        option.value = nombre;
-        option.textContent = nombre;
-        selectAlumno.appendChild(option);
-      });
-    }
-
-    document.getElementById("form-acceso").addEventListener("submit", function(e) {
-      e.preventDefault();
-      const grupo = selectGrupo.value;
-      const alumno = document.getElementById("alumno").value;
-      if (!grupo || !alumno) return alert("Debes seleccionar grupo y nombre.");
-
-      // Guardamos en sessionStorage para usar en el test
-      sessionStorage.setItem("grupoSeleccionado", grupo);
-      sessionStorage.setItem("alumnoSeleccionado", alumno);
-
-      // Redirigir al test
-      window.location.href = "sociograma.html"; // Cambia a la página real del test
-    });
-  </script>
 </body>
 </html>
+
