@@ -8,9 +8,11 @@
   <link rel="stylesheet" href="style.css" />
   <link rel="icon" type="image/png" href="img/favicon.png"/>
   <script>
-    // Limpiar completamente al cargar el documento
-    localStorage.clear();
-    sessionStorage.clear();
+    // Limpiar almacenamiento local al cargar la página
+    window.onload = () => {
+      localStorage.clear();
+      sessionStorage.clear();
+    };
   </script>
 </head>
 <body>
@@ -30,6 +32,3 @@
   </div>
 </body>
 </html>
-
-
-
