@@ -1,44 +1,80 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Gestión de Grupos</title>
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    .alumnos-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-  </style>
+  <meta charset="UTF-8">
+  <title>Gestión de Grupos - Escola Diversa</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="container">
-    <h1 class="titulo-destacado">Gestión de Grupos</h1>
 
-    <form>
-      <label for="nombre-grupo">Nombre del grupo:</label>
-      <input type="text" id="nombre-grupo" name="nombre-grupo" required />
+  <!-- Navegación superior -->
+  <nav class="nav-principal">
+    <a href="index.html">Inicio</a>
+    <a href="seleccion.html">Menú</a>
+    <a href="panel_grupos.html">Grupos</a>
+    <a href="panel_informes.html">Informes</a>
+  </nav>
 
-      <label>Alumnado:</label>
-      <div class="alumnos-grid">
-        <input type="text" placeholder="Nombre 1" />
-        <input type="text" placeholder="Nombre 2" />
-        <input type="text" placeholder="Nombre 3" />
-        <input type="text" placeholder="Nombre 4" />
-        <input type="text" placeholder="Nombre 5" />
-        <input type="text" placeholder="Nombre 6" />
+  <main class="contenedor-principal">
+    <h1>Gestión de Grupos</h1>
+
+    <section class="formulario-grupo">
+      <label for="nombre-curso">Nombre del grupo o curso:</label>
+      <input type="text" id="nombre-curso" placeholder="Ej. 4ºA">
+
+      <label for="nuevo-alumno">Añadir alumno:</label>
+      <input type="text" id="nuevo-alumno" placeholder="Nombre del alumno">
+      <button onclick="agregarAlumno()">Añadir</button>
+    </section>
+
+    <section class="lista-alumnos">
+      <h2>Lista de alumnos</h2>
+      <div id="alumnos-container" class="grid-alumnos">
+        <!-- Alumnos aparecerán aquí -->
       </div>
+    </section>
 
-      <div class="botones-idioma">
-        <button type="submit" class="btn-moderno">Guardar grupo</button>
-        <a href="#" class="btn-moderno">Editar grupo</a>
-      </div>
-    </form>
-  </div>
+    <section class="acciones">
+      <button onclick="guardarGrupo()">Guardar grupo</button>
+      <button onclick="editarGrupo()">Editar grupo</button>
+    </section>
+  </main>
+
+  <script>
+    const alumnos = [];
+
+    function agregarAlumno() {
+      const input = document.getElementById("nuevo-alumno");
+      const nombre = input.value.trim();
+      if (nombre) {
+        alumnos.push(nombre);
+        input.value = "";
+        mostrarAlumnos();
+      }
+    }
+
+    function mostrarAlumnos() {
+      const contenedor = document.getElementById("alumnos-container");
+      contenedor.innerHTML = "";
+      alumnos.forEach((nombre, i) => {
+        const div = document.createElement("div");
+        div.className = "alumno";
+        div.innerText = nombre;
+        contenedor.appendChild(div);
+      });
+    }
+
+    function guardarGrupo() {
+      alert("Grupo guardado (simulado)");
+    }
+
+    function editarGrupo() {
+      alert("Funcionalidad de edición pendiente");
+    }
+  </script>
+
 </body>
 </html>
+
 
 
