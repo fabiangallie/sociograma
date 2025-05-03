@@ -1,33 +1,70 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="gl">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Sociograma Escola Diversa</title>
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      background: linear-gradient(to bottom, #f0f4ff, #ffffff);
+      font-family: 'Segoe UI', sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      margin: 0;
+      text-align: center;
+    }
+    .logo {
+      width: 150px;
+      height: auto;
+      margin-bottom: 1rem;
+    }
+    .titulo {
+      font-size: 2rem;
+      color: #333;
+      margin-bottom: 0.3rem;
+    }
+    .escola {
+      font-size: 3rem;
+      font-weight: bold;
+      background: linear-gradient(to right, #e63946, #f1c40f, #2ecc71, #3498db, #9b59b6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 2rem;
+    }
+    .boton {
+      padding: 1rem 2rem;
+      font-size: 1.2rem;
+      background-color: #3498db;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .boton:hover {
+      background-color: #2980b9;
+    }
+  </style>
 </head>
 <body>
-  <div class="container">
-    <img src="https://cdn-icons-png.flaticon.com/512/10685/10685736.png" alt="Corazón diverso" style="max-width: 120px; margin-bottom: 1em;" />
-    <h1>Sociograma</h1>
-    <h2>Escola Diversa</h2>
-    <p>Escolle un idioma / Elige un idioma:</p>
-    <select id="language">
-      <option value="gl">Galego</option>
-      <option value="es">Castellano</option>
-    </select>
-    <br>
-    <button onclick="start()">Entrar</button>
-  </div>
 
-  <script>
-    function start() {
-      const lang = document.getElementById('language').value;
-      localStorage.setItem('lang', lang);
-      window.location.href = "seleccion.html";
-    }
-  </script>
+  <!-- Imagen del corazón -->
+  <img src="img/corazon.png" alt="Corazón multicolor" class="logo" />
+
+  <!-- Título -->
+  <div class="titulo">Sociograma</div>
+  <div class="escola">Escola Diversa</div>
+
+  <!-- Botón para entrar -->
+  <a href="seleccion_idioma.html">
+    <button class="boton">Entrar</button>
+  </a>
+
 </body>
 </html>
+
 
 
