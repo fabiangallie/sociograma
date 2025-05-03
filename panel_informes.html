@@ -3,71 +3,36 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Informes del sociograma</title>
+  <title>Informes de Grupos</title>
   <link rel="stylesheet" href="style.css" />
-  <style>
-    .container {
-      max-width: 900px;
-      margin: 2em auto;
-      background: white;
-      padding: 2em;
-      border-radius: 12px;
-      box-shadow: 0 6px 16px rgba(0,0,0,0.08);
-    }
-    .informe-box {
-      background: #f9f9f9;
-      margin: 1em 0;
-      padding: 1em;
-      border-radius: 8px;
-      white-space: pre-wrap;
-      font-family: monospace;
-      border-left: 4px solid #5dade2;
-    }
-    h2 {
-      margin-bottom: 0.5em;
-    }
-    .no-data {
-      color: gray;
-      font-style: italic;
-    }
-  </style>
 </head>
 <body>
   <div class="container">
-    <h2>Informes recogidos</h2>
-    <p>Se muestran los informes guardados individualmente tras cada test.</p>
-    <div id="listaInformes"></div>
-  </div>
+    <div class="title-box azul">
+      <h1 class="title-grande">Informes y Resultados</h1>
+      <p>Consulta informes por curso</p>
+    </div>
 
-  <script>
-    function cargarInformes() {
-      const contenedor = document.getElementById("listaInformes");
-      contenedor.innerHTML = "";
-      let hayDatos = false;
+    <form class="form">
+      <label for="curso-select">Selecciona un curso:</label>
+      <select id="curso-select" name="curso">
+        <!-- Aquí se cargarán los cursos disponibles -->
+      </select>
+      <button type="submit" class="btn">Ver informe</button>
+    </form>
 
-      Object.keys(localStorage).forEach(clave => {
-        if (clave.startsWith("respuesta_")) {
-          hayDatos = true;
-          const datos = JSON.parse(localStorage.getItem(clave));
-          const div = document.createElement("div");
-          div.className = "informe-box";
-          div.textContent = `Alumno/a: ${datos.alumno}
-Curso: ${datos.curso}
-Fecha: ${datos.fecha}
+    <div id="informe-resultado">
+      <!-- Aquí se mostrará la gráfica o los datos -->
+    </div>
 
-${datos.respuestas.map(r => `${r.pregunta}\n→ ${r.seleccionados.join(", ") || "Ninguno"}`).join("\n\n")}
-          `;
-          contenedor.appendChild(div);
-        }
+    <script>
+      document.querySelector("form").addEventListener("submit", function(e) {
+        e.preventDefault();
+        const curso = document.getElementById("curso-select").value;
+        document.getElementById("informe-resultado").innerHTML = `<p>Mostrando informe para <strong>${curso}</strong>...</p>`;
+        // Aquí cargarías el informe real
       });
-
-      if (!hayDatos) {
-        contenedor.innerHTML = `<p class="no-data">No hay informes disponibles aún.</p>`;
-      }
-    }
-
-    cargarInformes();
-  </script>
+    </script>
+  </div>
 </body>
 </html>
-
