@@ -2,9 +2,8 @@ body {
   margin: 0;
   padding: 0;
   font-family: 'Arial Rounded MT Bold', sans-serif;
-  background-color: #f0f8ff;
+  background-color: #e0f7fa;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100vh;
@@ -15,31 +14,33 @@ body {
 }
 
 .logo {
-  width: 150px;
+  width: 180px;
   margin-bottom: 20px;
 }
 
 .titulo {
   font-size: 3rem;
-  background-color: #b3e5fc;
+  background-color: #bbdefb;
   color: #0d47a1;
-  padding: 10px 20px;
-  border-radius: 10px;
-  margin-bottom: 20px;
+  padding: 15px 30px;
+  border-radius: 15px;
+  margin-bottom: 25px;
 }
 
 .idioma-selector button {
   font-size: 1.2rem;
-  padding: 10px 20px;
+  padding: 12px 24px;
   margin: 10px;
   border-radius: 8px;
-  background-color: #81d4fa;
+  background-color: #64b5f6;
   border: none;
   cursor: pointer;
+  color: white;
   transition: background-color 0.3s;
 }
 
 .idioma-selector button:hover {
-  background-color: #4fc3f7;
+  background-color: #42a5f5;
 }
+
 
